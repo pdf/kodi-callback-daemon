@@ -33,6 +33,7 @@ func main() {
 
 		if err := dec.Decode(&m); err != nil {
 			log.Println(err)
+			return
 		}
 
 		switch m.Method {
