@@ -8,41 +8,53 @@ import (
 )
 
 var conn net.Conn
-var Decoder *json.Decoder
+var decoder *json.Decoder
 
-// XBMC server->client notification
-type XBMCNotification struct {
-	Method string
+// Notification stores XBMC server->client notifications.
+type Notification struct {
+	Method string `json:"method"`
 	Params struct {
 		Data struct {
 			Item *struct {
-				Type string
-			}
-		}
-	}
+				Type string `json:"type"`
+			} `json:"item"` // Optional
+		} `json:"data"`
+	} `json:"params"`
 }
 
-// Initialize connection
+// Connect establishes a TCP connection to the specified address and attaches
+// JSON decoder.
 func Connect(address string) {
 	conn, err := net.Dial(`tcp`, address)
 	if err != nil {
-		log.Panicln(`[ERROR] Connecting to XBMC: `, err)
+		log.Panicln(`[ERROR] Connecting to XBMC:`, err)
 	} else {
 		log.Println(`[INFO] Connected to XBMC`)
 	}
-	Decoder = json.NewDecoder(conn)
+	decoder = json.NewDecoder(conn)
 }
 
-// Send encoded data to Hyperion
-func Read(notification *XBMCNotification) {
-	err := Decoder.Decode(&notification)
+// Read and decode JSON from the XBMC connection into the notification pointer.
+func Read(notification *Notification) {
+	err := decoder.Decode(&notification)
+	// Bail on EOF, eat any decoding errors otherwise.
+	// TODO: This probably needs to be more robust.
 	if err == io.EOF {
-		log.Panicln(`[ERROR] Reading from XBMC: `, err)
+		log.Panicln(`[ERROR] Reading from XBMC:`, err)
 	} else if err != nil {
-		log.Println(`[ERROR] Decoding response from XBMC: `, err)
+		log.Println(`[ERROR] Decoding response from XBMC:`, err)
+		return
 	}
 }
 
+// Close XBMC connection
 func Close() {
 	conn.Close()
+}
+
+// Execute takes the callback and performs a JSON-RPC request over the
+// established XBMC connection.
+func Execute(callback map[string]interface{}) {
+	// BUG(pdf): xbmc.Execute is not implemented yet.
+	log.Println(`[WARNING] xbmc.Execute(): Not implemented`)
 }

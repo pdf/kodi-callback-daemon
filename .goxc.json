@@ -1,0 +1,5 @@
+{
+	"ArtifactsDest": "../xbmc-callback-daemon-jekyll",
+	"BuildConstraints": "!plan9,!netbsd,!openbsd",
+	"ConfigVersion": "0.9"
+}

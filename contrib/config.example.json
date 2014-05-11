@@ -1,0 +1,129 @@
+{
+  "xbmc": {
+    "address": "127.0.0.1",
+    "port": 9090
+  },
+  "hyperion": {
+    "address": "127.0.0.1",
+    "port": 19444
+  },
+  "callbacks": {
+    "Startup": [
+      {
+        "backend": "hyperion",
+        "command": "transform",
+        "transform": {
+          "gamma": [2.2, 2.2, 2.8],
+          "valueGain": 1.0,
+          "saturationGain": 1.0
+        }
+      },
+      {
+        "backend": "hyperion",
+        "command": "effect",
+        "priority": 86,
+        "effect": {
+          "name": "Rainbow swirl"
+        }
+      }
+    ],
+    "Player.OnPlay": [
+      {
+        "types": ["movie", "episode"],
+        "backend": "hyperion",
+        "command": "transform",
+        "transform": {
+          "gamma": [2.2, 2.2, 2.8],
+          "valueGain": 1.0,
+          "saturationGain": 1.0
+        }
+      },
+      {
+        "types": ["song"],
+        "backend": "hyperion",
+        "command": "transform",
+        "transform": {
+          "gamma": [0.8, 0.8, 0.8],
+          "valueGain": 2.0,
+          "saturationGain": 2.0
+        }
+      },
+      {
+        "backend": "hyperion",
+        "command": "clear",
+        "priority": 86
+      }
+    ],
+    "Player.OnPause": [
+      {
+        "backend": "hyperion",
+        "command": "transform",
+        "transform": {
+          "gamma": [2.2, 2.2, 2.8],
+          "valueGain": 1.0,
+          "saturationGain": 1.0
+        }
+      },
+      {
+        "backend": "hyperion",
+        "command": "effect",
+        "priority": 86,
+        "effect": {
+          "name": "Red mood blobs"
+        }
+      }
+    ],
+    "Player.OnStop": [
+      {
+        "backend": "hyperion",
+        "command": "transform",
+        "transform": {
+          "gamma": [2.2, 2.2, 2.8],
+          "valueGain": 1.0,
+          "saturationGain": 1.0
+        }
+      },
+      {
+        "backend": "hyperion",
+        "command": "effect",
+        "priority": 86,
+        "effect": {
+          "name": "Rainbow swirl"
+        }
+      }
+    ],
+    "GUI.OnScreensaverActivated": [
+      {
+        "backend": "hyperion",
+        "command": "color",
+        "priority": 86,
+        "color": [0,0,0]
+      }
+    ],
+    "GUI.OnScreensaverDeactivated": [
+      {
+        "backend": "hyperion",
+        "command": "effect",
+        "priority": 86,
+        "effect": {
+          "name": "Rainbow swirl"
+        }
+      }
+    ],
+    "System.OnQuit": [
+      {
+        "backend": "hyperion",
+        "command": "color",
+        "priority": 86,
+        "color": [0,0,0]
+      }
+    ],
+    "System.OnRestart": [
+      {
+        "backend": "hyperion",
+        "command": "color",
+        "color": [0,0,0]
+      }
+    ]
+  }
+}
