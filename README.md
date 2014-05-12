@@ -75,7 +75,7 @@ If you're using the Hyperion backend, specify your Hyperion address and port for
 ```
 
 ### Callbacks
-The callbacks object is keyed by the XBMC notification method, with each method containing an array of callback objects. There is one exception, which is the `Startup` method - any callbacks attached to this method will be executed when the daemon starts up. Each callback in the array will be executed sequentially. The callback must contain a `backend` property, the value of which is one of `["hyperion", "xbmc", "command"]`. All other properties are backend-specific.
+The callbacks object is keyed by the XBMC notification method, with each method containing an array of callback objects. There is one exception, which is the `Startup` method - any callbacks attached to this method will be executed when the daemon starts up. Each callback in the array will be executed sequentially. The callback must contain a `backend` property, the value of which is one of `["hyperion", "xbmc", "shell"]`. All other properties are backend-specific.
 
 #### Hyperion
 Callbacks using the `hyperion` backend contain the `backend` property, and all other properties are sent verbatim as the request to Hyperion.  For example, to execute the `Rainbow swirl` effect, the callback would look something like this:
