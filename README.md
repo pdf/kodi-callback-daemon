@@ -20,7 +20,7 @@ The XBMC backend submits callbacks via the JSON-RPC interface. There is excellen
 The shell backend simply executes a command on the system with specified arguments.
 
 ## Installation
-Grab the latest compiled release from the [Releases](https://github.com/pdf/xbmc-callback-daemon/releases) page and either install it using your package manager (Debian/Ubuntu/derivs), or extract `xbmc-callback-daemon` to somewhere on your path (eg - `/usr/local/bin`) on Linux/OSX, or anywhere on Windows.
+Grab the [Latest Release](https://github.com/pdf/xbmc-callback-daemon/releases/latest) as a compiled binary and either install it using your package manager (Debian/Ubuntu/derivs, via the `.deb` package), or extract `xbmc-callback-daemon` to somewhere on your path (eg - `/usr/local/bin`) on Linux/OSX, or where ever on Windows.
 
 Alternatively, you make clone this repository and build it yourself.
 
@@ -46,7 +46,7 @@ The configuration file is written in JSON (I know, JSON is awful for configurati
 
 See the [config.example.json](https://github.com/pdf/xbmc-callback-daemon/tree/master/contrib/config.example.json) for my Hyperion setup, which uses most of the available features.
 
-### XBMC
+### XBMC Connection
 Specify your XBMC IP address and port for the JSON interface in the `xbmc` property:
 
 ```json
@@ -58,7 +58,7 @@ Specify your XBMC IP address and port for the JSON interface in the `xbmc` prope
 }
 ```
 
-### Hyperion
+### Hyperion Connection
 If you're using the Hyperion backend, specify your Hyperion address and port for the JSON interface in the `hyperion` property:
 
 ```json
@@ -175,7 +175,7 @@ Full example, mixing `hyperion` and `shell` callbacks:
         "command": "/bin/echo",
         "arguments": [
           "-e",
-          "The `arguments` property is optional\n"
+          "The 'arguments' property is optional\n"
         ]
       }
     ],
