@@ -17,8 +17,6 @@ __NOTE__: _This backend is not yet implemented_
 The XBMC backend submits callbacks via the JSON-RPC interface. There is excellent documentation available in the [XBMC wiki](http://wiki.xbmc.org/?title=JSON-RPC_API).
 
 ### Shell
-__NOTE__: _This backend is not yet implemented_
-
 The shell backend simply executes a command on the system with specified arguments.
 
 ## Installation
@@ -135,7 +133,65 @@ And if we wanted to run this callback on `Startup`, and on `Player.OnStop` notif
 __TODO__
 
 #### Shell
-__TODO__
+Callbacks using the `shell` backend contain the `backend` property, a `command` string property containing the path to the executable to be run, an optional `arguments` array containing a list of arguments to be passed to the command, and an optional `background` property to allow forking a long-running process without waiting for it to return.  An example might look like:
+
+```json
+{
+  "backend": "shell",
+  "background": true,
+  "command": "/bin/echo",
+  "arguments": [
+    "-e",
+    "The 'arguments' property is optional\n"
+  ]
+}
+```
+
+Full example, mixing `hyperion` and `shell` callbacks:
+
+```json
+{
+  "xbmc": {
+    "address": "127.0.0.1",
+    "port": 9090
+  },
+  "hyperion": {
+    "address": "127.0.0.1",
+    "port": 19444
+  },
+  "callbacks": {
+    "Startup": [
+      {
+        "backend": "hyperion",
+        "command": "effect",
+        "priority": 86,
+        "effect": {
+          "name": "Rainbow swirl"
+        }
+      },
+      {
+        "backend": "shell",
+        "background": true,
+        "command": "/bin/echo",
+        "arguments": [
+          "-e",
+          "The `arguments` property is optional\n"
+        ]
+      }
+    ],
+    "Player.OnStop": [
+      {
+        "backend": "hyperion",
+        "command": "effect",
+        "priority": 86,
+        "effect": {
+          "name": "Rainbow swirl"
+        }
+      }
+    ]
+  }
+}
+```
 
 #### Player.OnPlay
 The `Player.OnPlay` notification has one additional, optional property available to callbacks: `types`. This property may contain an array of item types sent with XBMC notifications with this method. At the time of writing, these types are `["movie", "episode", "song"]`.  Callbacks with a `types` property will only execute if the played media type matches one of the listed types in the callback.  Callbacks with no `types` property are always executed on `Player.OnPlay` notifications.  The following example increases Hyperion saturation/value, and decreases gamma compensation for music so that visualizations produce punchy lighting effects, and conversely sets much more sedate values for video types.  It also executes a `clear` command on channel 86 when any media is played (`types` is omitted).

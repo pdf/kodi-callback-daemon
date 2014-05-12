@@ -51,7 +51,7 @@ func execute(callbacks []interface{}) {
 			shell.Execute(m)
 
 		default:
-			continue
+			log.Println(`[WARNING] Unknown backend:`, m[`backend`])
 		}
 	}
 }
