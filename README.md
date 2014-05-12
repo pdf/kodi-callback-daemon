@@ -39,7 +39,7 @@ Windows:
 C:\Path\To\xbmc-callback-daemon.exe C:\Path\To\configFile.json
 ```
 
-There are Upstart init scripts available in [contrib](https://github.com/pdf/xbmc-callback-daemon/tree/master/contrib/upstart).  Just copy `xbmc-callback-daemon.conf` to `/etc/init/xbmc-callback-daemon.conf` and `default` to `/etc/default/xbmc-callback-daemon`, then place your config file at `/etc/xbmc-callback-daemon.json`.
+There are Upstart init scripts available in [contrib](https://github.com/pdf/xbmc-callback-daemon/tree/master/contrib/upstart).  Just copy `xbmc-callback-daemon.conf` to `/etc/init/xbmc-callback-daemon.conf` and `default` to `/etc/default/xbmc-callback-daemon`, then place your config file at `/etc/xbmc-callback-daemon.json`.  Contributions welcome for SysV/SystemD/etc.
 
 _NB: I've not actually tested Windows/OSX support at all, feel free to submit bug reports_
 
