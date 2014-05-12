@@ -22,16 +22,26 @@ __NOTE__: _This backend is not yet implemented_
 The shell backend simply executes a command on the system with specified arguments.
 
 ## Installation
-__TODO__
+Grab the latest compiled release from the [Releases](https://github.com/pdf/xbmc-callback-daemon/releases) page and either install it using your package manager (Debian/Ubuntu/derivs), or extract `xbmc-callback-daemon` to somewhere on your path (eg - `/usr/local/bin`) on Linux/OSX, or anywhere on Windows.
+
+Alternatively, you make clone this repository and build it yourself.
 
 ## Usage
 To run manually:
 
+Linux/OSX:
 ```bash
 /path/to/bin/xbmc-callback-daemon /path/to/configFile.json
 ```
 
+Windows:
+```
+C:\Path\To\xbmc-callback-daemon.exe C:\Path\To\configFile.json
+```
+
 There are Upstart init scripts available in [contrib](https://github.com/pdf/xbmc-callback-daemon/tree/master/contrib/upstart).  Just copy `xbmc-callback-daemon.conf` to `/etc/init/xbmc-callback-daemon.conf` and `default` to `/etc/default/xbmc-callback-daemon`, then place your config file at `/etc/xbmc-callback-daemon.json`.
+
+_NB: I've not actually tested Windows/OSX support at all, feel free to submit bug reports_
 
 ## Configuration
 The configuration file is written in JSON (I know, JSON is awful for configuration, but since we're passing JSON messages everywhere, it makes the most sense here), and has three top-level members: `xbmc` (required), `hyperion` (optional, required if you're using the Hyperion backend), and `callbacks` (required, or nothing will be done!).
