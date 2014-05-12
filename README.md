@@ -25,21 +25,47 @@ Grab the [Latest Release](https://github.com/pdf/xbmc-callback-daemon/releases/l
 Alternatively, you make clone this repository and build it yourself.
 
 ## Usage
-To run manually:
 
+_NB: I've not actually tested Windows/OSX/FreeBSD support at all, feel free to submit bug reports_
+
+### Run manually
 Linux/OSX/FreeBSD:
+
 ```bash
 /path/to/bin/xbmc-callback-daemon /path/to/configFile.json
 ```
 
 Windows:
+
 ```
 C:\Path\To\xbmc-callback-daemon.exe C:\Path\To\configFile.json
 ```
 
-There are Upstart init scripts available in [contrib](https://github.com/pdf/xbmc-callback-daemon/tree/master/contrib/upstart).  Just copy `xbmc-callback-daemon.conf` to `/etc/init/xbmc-callback-daemon.conf` and `default` to `/etc/default/xbmc-callback-daemon`, then place your config file at `/etc/xbmc-callback-daemon.json`.  Contributions welcome for SysV/SystemD/etc.
+### Upstart
+There are Upstart init scripts available in [contrib](https://github.com/pdf/xbmc-callback-daemon/tree/master/contrib/upstart).  Just copy `xbmc-callback-daemon.conf` to `/etc/init/xbmc-callback-daemon.conf` and `default` to `/etc/default/xbmc-callback-daemon`, then place your config file at `/etc/xbmc-callback-daemon.json`.  Contributions welcome for SysV/SystemD/etc.  The Upstart job assumes you are starting XBMC via an the `xbmc` Upstart job, otherwise adapt as necessary.
 
-_NB: I've not actually tested Windows/OSX/FreeBSD support at all, feel free to submit bug reports_
+### XBMC autoexec.py
+You might alternatively start the daemon from XBMC's `autostart.py`.  Simply edit `userdata/autoexec.py` in your XBMC directory (ie `~/.xbmc/userdata/autoexec.py` on \*nix systems), and add the following:
+
+Linux/OSX/FreeBSD:
+
+```python
+import xbmc
+import subprocess
+
+subprocess.Popen(['/path/to/bin/xbmc-callback-daemon', '/path/to/configFile.json'])
+```
+
+Windows:
+
+```python
+import xbmc
+import subprocess
+
+subprocess.Popen(['C:\\Path\\To\\xbmc-callback-daemon.exe', 'C:\\Path\\To\\configFile.json'])
+```
+
+Note the double-slashes necessary for escaping the Windows paths in Python strings.
 
 ## Configuration
 The configuration file is written in JSON (I know, JSON is awful for configuration, but since we're passing JSON messages everywhere, it makes the most sense here), and has three top-level members: `xbmc` (required), `hyperion` (optional, required if you're using the Hyperion backend), and `callbacks` (required, or nothing will be done!).
