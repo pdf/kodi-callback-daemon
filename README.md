@@ -73,7 +73,7 @@ The configuration file is written in JSON (I know, JSON is awful for configurati
 - `xbmc` connection object (required)
 - `hyperion` connection object (optional, but required if you're using the Hyperion backend)
 - `debug` boolean enables debug logging (optional)
-- `callbacks` (required, or nothing will be done!).
+- `callbacks` object (required, or nothing will be done!).
 
 See the [config.example.json](https://github.com/pdf/xbmc-callback-daemon/tree/master/contrib/config.example.json) for my Hyperion setup, which uses most of the available features.
 
