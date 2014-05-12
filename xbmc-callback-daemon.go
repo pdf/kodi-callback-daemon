@@ -2,10 +2,10 @@ package main
 
 import (
 	`fmt`
-	`log`
 	`os`
 	`github.com/pdf/xbmc-callback-daemon/config`
 	`github.com/pdf/xbmc-callback-daemon/hyperion`
+	`github.com/pdf/xbmc-callback-daemon/logger`
 	`github.com/pdf/xbmc-callback-daemon/shell`
 	`github.com/pdf/xbmc-callback-daemon/xbmc`
 )
@@ -30,6 +30,9 @@ func init() {
 		usage()
 	}
 	cfg = config.Load(os.Args[1])
+	if cfg.Debug != nil {
+		logger.DebugEnabled = *cfg.Debug
+	}
 }
 
 // execute iterates through a list of callbacks, and sends them to the backend
@@ -51,7 +54,7 @@ func execute(callbacks []interface{}) {
 			shell.Execute(m)
 
 		default:
-			log.Println(`[WARNING] Unknown backend:`, m[`backend`])
+			logger.Warn(`Unknown backend: `, m[`backend`])
 		}
 	}
 }
@@ -74,7 +77,7 @@ func callbacksByType(matchType string, callbacks []interface{}) []interface{} {
 			// Access internal types slice.
 			cbTypes, ok := cb[`types`].([]interface{})
 			if ok == false {
-				log.Panicln(`Couldn't understand 'types' array, check your configuration.`)
+				logger.Panic(`Couldn't understand 'types' array, check your configuration.`)
 			}
 			for j := range cbTypes {
 				if cbTypes[j].(string) == matchType {
@@ -117,6 +120,7 @@ func main() {
 		// Read from XBMC.
 		xbmc.Read(notification)
 
+		logger.Debug(`Received notification from XBMC: `, notification)
 		// Match XBMC notification to our configured callbacks.
 		if callbacks[notification.Method] != nil {
 			cbs := callbacks[notification.Method].([]interface{})

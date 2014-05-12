@@ -3,8 +3,8 @@ package xbmc
 import (
 	`encoding/json`
 	`io`
-	`log`
 	`net`
+	`github.com/pdf/xbmc-callback-daemon/logger`
 )
 
 var conn net.Conn
@@ -27,9 +27,9 @@ type Notification struct {
 func Connect(address string) {
 	conn, err := net.Dial(`tcp`, address)
 	if err != nil {
-		log.Panicln(`[ERROR] Connecting to XBMC:`, err)
+		logger.Panic(`Connecting to XBMC: `, err)
 	} else {
-		log.Println(`[INFO] Connected to XBMC`)
+		logger.Info(`Connected to XBMC`)
 	}
 	decoder = json.NewDecoder(conn)
 }
@@ -40,9 +40,9 @@ func Read(notification *Notification) {
 	// Bail on EOF, eat any decoding errors otherwise.
 	// TODO: This probably needs to be more robust.
 	if err == io.EOF {
-		log.Panicln(`[ERROR] Reading from XBMC:`, err)
+		logger.Panic(`Reading from XBMC: `, err)
 	} else if err != nil {
-		log.Println(`[ERROR] Decoding response from XBMC:`, err)
+		logger.Error(`Decoding response from XBMC: `, err)
 		return
 	}
 }
@@ -55,6 +55,7 @@ func Close() {
 // Execute takes the callback and performs a JSON-RPC request over the
 // established XBMC connection.
 func Execute(callback map[string]interface{}) {
+	logger.Debug(`Sending request to XBMC: `, callback)
 	// BUG(pdf): xbmc.Execute is not implemented yet.
-	log.Println(`[WARNING] xbmc.Execute(): Not implemented`)
+	logger.Warn(`xbmc.Execute(): Not implemented`)
 }

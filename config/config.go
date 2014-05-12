@@ -2,8 +2,8 @@ package config
 
 import (
 	`encoding/json`
-	`log`
 	`os`
+	`github.com/pdf/xbmc-callback-daemon/logger`
 )
 
 // address contains the IP address and port for TCP/UDP connections.
@@ -16,6 +16,7 @@ type address struct {
 type Config struct {
 	XBMC      address     `json:"xbmc"`      // Required
 	Hyperion  *address    `json:"hyperion"`  // Optional
+	Debug     *bool       `json:"debug"`     // Optional
 	Callbacks interface{} `json:"callbacks"` // Required
 }
 
@@ -24,13 +25,13 @@ type Config struct {
 func Load(filename string) Config {
 	file, err := os.Open(filename)
 	if err != nil {
-		log.Panicln(`[ERROR] Opening config file:`, err)
+		logger.Panic(`Opening config file: `, err)
 	}
 
 	dec := json.NewDecoder(file)
 	conf := Config{}
 	if err = dec.Decode(&conf); err != nil {
-		log.Panicln(`[ERROR] Parsing config file:`, err)
+		logger.Panic(`Parsing config file: `, err)
 	}
 
 	return conf

@@ -68,7 +68,12 @@ subprocess.Popen(['C:\\Path\\To\\xbmc-callback-daemon.exe', 'C:\\Path\\To\\confi
 Note the double-slashes necessary for escaping the Windows paths in Python strings.
 
 ## Configuration
-The configuration file is written in JSON (I know, JSON is awful for configuration, but since we're passing JSON messages everywhere, it makes the most sense here), and has three top-level members: `xbmc` (required), `hyperion` (optional, required if you're using the Hyperion backend), and `callbacks` (required, or nothing will be done!).
+The configuration file is written in JSON (I know, JSON is awful for configuration, but since we're passing JSON messages everywhere, it makes the most sense here), and has the following top-level members:
+
+- `xbmc` connection object (required)
+- `hyperion` connection object (optional, but required if you're using the Hyperion backend)
+- `debug` boolean enables debug logging
+- `callbacks` (required, or nothing will be done!).
 
 See the [config.example.json](https://github.com/pdf/xbmc-callback-daemon/tree/master/contrib/config.example.json) for my Hyperion setup, which uses most of the available features.
 
@@ -97,6 +102,23 @@ If you're using the Hyperion backend, specify your Hyperion address and port for
     "address": "127.0.0.1",
     "port": 19444
   }
+}
+```
+
+### Debug logging
+You can enable debug logging by setting the debug property to `true`:
+
+```json
+{
+  "xbmc": {
+    "address": "127.0.0.1",
+    "port": 9090
+  },
+  "hyperion": {
+    "address": "127.0.0.1",
+    "port": 19444
+  },
+  "debug": true
 }
 ```
 
@@ -130,6 +152,7 @@ And if we wanted to run this callback on `Startup`, and on `Player.OnStop` notif
     "address": "127.0.0.1",
     "port": 19444
   },
+  "debug": true,
   "callbacks": {
     "Startup": [
       {
@@ -232,6 +255,7 @@ The `Player.OnPlay` notification has one additional, optional property available
     "address": "127.0.0.1",
     "port": 19444
   },
+  "debug": true,
   "callbacks": {
     "Player.OnPlay": [
       {
