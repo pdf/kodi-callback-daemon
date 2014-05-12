@@ -20,19 +20,19 @@ type Response struct {
 	Error   *string `json:"error"`
 }
 
-// jfloat64 is a float64 class to ensure marshalling as floats for round
-// numbers.
-// Seriously, fuck you Go.
-type jfloat64 float64
+// qtfloat64 is a float64 class to ensure marshalling as floats as QT expects
+// them.
+// Seriously, fuck you QT.
+type qtfloat64 float64
 
 // Custom marshaller for correct float output
-func (f jfloat64) MarshalText() ([]byte, error) {
+func (f qtfloat64) MarshalText() ([]byte, error) {
 	v := reflect.ValueOf(f)
 	return []byte(strconv.FormatFloat(v.Float(), 'f', 6, 64)), nil
 }
 
 // Custom marshaller for correct float output
-func (f jfloat64) MarshalJSON() ([]byte, error) {
+func (f qtfloat64) MarshalJSON() ([]byte, error) {
 	v := reflect.ValueOf(f)
 	return []byte(strconv.FormatFloat(v.Float(), 'f', 6, 64)), nil
 }
@@ -56,9 +56,9 @@ func Close() {
 }
 
 // coerce takes a key/value pair and recurses down the value, replacing any
-// float64 values with jfloat64 conversions and returns the result.
+// float64 values with qtfloat64 conversions and returns the result.
 // Some known non-float values are instead converted to integers.
-// Seriously, fuck you Go.
+// Seriously, fuck you QT.
 func coerce(key string, value interface{}) interface{} {
 	switch value.(type) {
 	case float64:
@@ -66,7 +66,7 @@ func coerce(key string, value interface{}) interface{} {
 		case `priority`, `color`:
 			return uint8(value.(float64))
 		default:
-			return jfloat64(value.(float64))
+			return qtfloat64(value.(float64))
 		}
 	case []interface{}:
 		result, ok := value.([]interface{})
