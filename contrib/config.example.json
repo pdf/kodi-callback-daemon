@@ -20,6 +20,16 @@
       },
       {
         "backend": "hyperion",
+        "command": "clear",
+        "priority": 68
+      },
+      {
+        "backend": "hyperion",
+        "command": "clear",
+        "priority": 86
+      },
+      {
+        "backend": "hyperion",
         "command": "effect",
         "priority": 86,
         "effect": {
@@ -96,25 +106,22 @@
       {
         "backend": "hyperion",
         "command": "color",
-        "priority": 86,
+        "priority": 68,
         "color": [0,0,0]
       }
     ],
     "GUI.OnScreensaverDeactivated": [
       {
         "backend": "hyperion",
-        "command": "effect",
-        "priority": 86,
-        "effect": {
-          "name": "Rainbow swirl"
-        }
+        "command": "clear",
+        "priority": 68
       }
     ],
     "System.OnQuit": [
       {
         "backend": "hyperion",
         "command": "color",
-        "priority": 86,
+        "priority": 68,
         "color": [0,0,0]
       }
     ],
@@ -122,6 +129,7 @@
       {
         "backend": "hyperion",
         "command": "color",
+        "priority": 68,
         "color": [0,0,0]
       }
     ]
