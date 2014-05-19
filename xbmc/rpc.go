@@ -4,11 +4,15 @@ import (
 	`encoding/json`
 	`io`
 	`net`
+	`time`
 	`github.com/pdf/xbmc-callback-daemon/logger`
 )
 
-var conn net.Conn
-var decoder *json.Decoder
+var (
+	connAddress string
+	conn        net.Conn
+	decoder     *json.Decoder
+)
 
 // Notification stores XBMC server->client notifications.
 type Notification struct {
@@ -25,22 +29,28 @@ type Notification struct {
 // Connect establishes a TCP connection to the specified address and attaches
 // JSON decoder.
 func Connect(address string) {
-	conn, err := net.Dial(`tcp`, address)
-	if err != nil {
-		logger.Panic(`Connecting to XBMC: `, err)
-	} else {
-		logger.Info(`Connected to XBMC`)
+	if connAddress == `` {
+		connAddress = address
 	}
+	conn, err := net.Dial(`tcp`, address)
+	for err != nil {
+		logger.Error(`Connecting to XBMC: `, err)
+		logger.Info(`Attempting reconnect...`)
+		time.Sleep(time.Second)
+		conn, err = net.Dial(`tcp`, address)
+	}
+	logger.Info(`Connected to XBMC`)
 	decoder = json.NewDecoder(conn)
 }
 
 // Read and decode JSON from the XBMC connection into the notification pointer.
 func Read(notification *Notification) {
 	err := decoder.Decode(&notification)
-	// Bail on EOF, eat any decoding errors otherwise.
+	// Kick off the connection again on EOF, eat any decoding errors otherwise.
 	// TODO: This probably needs to be more robust.
 	if err == io.EOF {
-		logger.Panic(`Reading from XBMC: `, err)
+		logger.Error(`Reading from XBMC: `, err)
+		Connect(connAddress)
 	} else if err != nil {
 		logger.Error(`Decoding response from XBMC: `, err)
 		return
