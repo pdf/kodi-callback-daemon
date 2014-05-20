@@ -71,7 +71,9 @@ func coerce(key string, value interface{}) interface{} {
 	switch value.(type) {
 	case float64:
 		switch key {
-		case `priority`, `color`:
+		case `priority`:
+			return uint16(value.(float64))
+		case `color`:
 			return uint8(value.(float64))
 		default:
 			return qtfloat64(value.(float64))
