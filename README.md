@@ -42,7 +42,7 @@ C:\Path\To\xbmc-callback-daemon.exe C:\Path\To\configFile.json
 ```
 
 ### Upstart
-There are Upstart init scripts available in [contrib](https://github.com/pdf/xbmc-callback-daemon/tree/master/contrib/upstart).  Just copy `xbmc-callback-daemon.conf` to `/etc/init/xbmc-callback-daemon.conf` and `default` to `/etc/default/xbmc-callback-daemon`, then place your config file at `/etc/xbmc-callback-daemon.json`.  Contributions welcome for SysV/SystemD/etc.  The Upstart job assumes you are starting XBMC via an the `xbmc` Upstart job, otherwise adapt as necessary.
+There are Upstart init scripts available in [contrib](https://github.com/pdf/xbmc-callback-daemon/tree/master/contrib/upstart).  Just copy `xbmc-callback-daemon.conf` to `/etc/init/xbmc-callback-daemon.conf` and `default` to `/etc/default/xbmc-callback-daemon`, then place your config file at `/etc/xbmc-callback-daemon.json`.  Contributions welcome for SysV/SystemD/etc.
 
 ### XBMC autoexec.py
 You might alternatively start the daemon from XBMC's `autostart.py`.  Simply edit `userdata/autoexec.py` in your XBMC directory (ie `~/.xbmc/userdata/autoexec.py` on \*nix systems), and add the following:
