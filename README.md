@@ -67,6 +67,9 @@ subprocess.Popen(['C:\\Path\\To\\xbmc-callback-daemon.exe', 'C:\\Path\\To\\confi
 
 Note the double-slashes necessary for escaping the Windows paths in Python strings.
 
+## User support
+If you have questions on how to use the daemon, you may post them in the [XBMC forum thread](http://forum.xbmc.org/showthread.php?tid=194910).
+
 ## Configuration
 The configuration file is written in JSON (I know, JSON is awful for configuration, but since we're passing JSON messages everywhere, it makes the most sense here), and has the following top-level members:
 
