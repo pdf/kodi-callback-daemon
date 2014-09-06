@@ -97,8 +97,9 @@ func callbacksByType(matchType string, callbacks []interface{}) []interface{} {
 // main program loop.
 func main() {
 	// Connect to XBMC, this is required.
-	xbmc.Connect(fmt.Sprintf(`%s:%d`, cfg.XBMC.Address, cfg.XBMC.Port))
-	defer xbmc.Close()
+	x := xbmc.Connection{}
+	x.New(fmt.Sprintf(`%s:%d`, cfg.XBMC.Address, cfg.XBMC.Port))
+	defer x.Close()
 
 	// If the configuration specifies a Hyperion connection, use it.
 	if cfg.Hyperion != nil {
@@ -106,7 +107,6 @@ func main() {
 		defer hyperion.Close()
 	}
 
-	notification := &xbmc.Notification{}
 	// Get callbacks from configuration.
 	callbacks := cfg.Callbacks.(map[string]interface{})
 
@@ -118,9 +118,8 @@ func main() {
 	// Loop while reading from XBMC.
 	for {
 		// Read from XBMC.
-		xbmc.Read(notification)
+		notification := <-x.Notifications
 
-		logger.Debug(`Received notification from XBMC: `, notification)
 		// Match XBMC notification to our configured callbacks.
 		if callbacks[notification.Method] != nil {
 			cbs := callbacks[notification.Method].([]interface{})
