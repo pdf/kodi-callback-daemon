@@ -12,7 +12,6 @@ This daemon also aims to provide more flexibility. The targeted backends are [hy
 The Hyperion backend submits callbacks via the JSON interface. This interface is also used by the `hyperion-remote` command-line utility. There's no end-user documentation for this interface, so when writing callbacks, your best bet is to simply read the [JSON schemas](https://github.com/tvdzwan/hyperion/tree/master/libsrc/jsonserver/schema) in the source tree.
 
 ### XBMC
-__NOTE__: _This backend is not yet implemented_
 
 The XBMC backend submits callbacks via the JSON-RPC interface. There is excellent documentation available in the [XBMC wiki](http://wiki.xbmc.org/?title=JSON-RPC_API).
 
@@ -191,7 +190,76 @@ And if we wanted to run this callback on `Startup`, and on `Player.OnStop` notif
 ```
 
 #### XBMC
-__TODO__
+Callbacks using the `xbmc` backend contain the `backend` property, a `method` string property containing the XBMC RPC method to call, and a `params` object property containing the parameters to for the RPC call. An example might look like:
+
+```json
+{
+  "backend": "xbmc",
+  "method": "GUI.ShowNotification",
+  "params": {
+    "title": "Callback Daemon",
+    "message": "Hello from the callback daemon!",
+    "displaytime": 15000
+  }
+}
+```
+
+Full example, mixing `hyperion`, `xbmc` and `shell` callbacks:
+
+```json
+{
+  "xbmc": {
+    "address": "127.0.0.1",
+    "port": 9090
+  },
+  "hyperion": {
+    "address": "127.0.0.1",
+    "port": 19444
+  },
+  "callbacks": {
+    "Startup": [
+      {
+        "backend": "hyperion",
+        "command": "effect",
+        "priority": 86,
+        "effect": {
+          "name": "Rainbow swirl"
+        }
+      },
+      {
+        "backend": "shell",
+        "background": true,
+        "command": "/bin/echo",
+        "arguments": [
+          "-e",
+          "The 'arguments' property is optional\n"
+        ]
+      },
+      {
+        "backend": "xbmc",
+        "method": "GUI.ShowNotification",
+        "params": {
+          "title": "Callback Daemon",
+          "message": "Hello from the callback daemon!",
+          "displaytime": 15000
+        }
+      }
+    ],
+    "Player.OnStop": [
+      {
+        "backend": "hyperion",
+        "command": "effect",
+        "priority": 86,
+        "effect": {
+          "name": "Rainbow swirl"
+        }
+      }
+    ]
+  }
+}
+```
+
+For details on the available RPC methods, see the [XBMC wiki page](http://wiki.xbmc.org/index.php?title=JSON-RPC_API/v6).  Unfortunately, because the XBMC JSON-RPC implementation is non-conformant, you will get errors logged when using RPC methods that return strings instead of conformant JSON-RPC objects, but the calls will execute fine.
 
 #### Shell
 Callbacks using the `shell` backend contain the `backend` property, a `command` string property containing the path to the executable to be run, an optional `arguments` array containing a list of arguments to be passed to the command, and an optional `background` property to allow forking a long-running process without waiting for it to return.  An example might look like:

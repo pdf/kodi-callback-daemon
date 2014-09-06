@@ -155,7 +155,7 @@ func (c *Connection) Request(method string, params interface{}) (ch chan *Respon
 			`jsonrpc`: `2.0`,
 		}
 	}
-	logger.Debug(`XBMC Request: `, r)
+	logger.Debug(`Sending XBMC Request: `, r)
 	c.write <- r
 
 	return ch, nil
@@ -254,20 +254,37 @@ func (c *Connection) reader() {
 }
 
 // Close XBMC connection
-func (x *Connection) Close() {
-	for _, v := range x.responses {
+func (c *Connection) Close() {
+	for _, v := range c.responses {
 		close(v)
 	}
-	close(x.write)
-	close(x.Notifications)
-	x.pool.Stop()
-	x.conn.Close()
+	close(c.write)
+	close(c.Notifications)
+	c.pool.Stop()
+	c.conn.Close()
 }
 
 // Execute takes the callback and performs a JSON-RPC request over the
 // established XBMC connection.
-func Execute(callback map[string]interface{}) {
+func (c *Connection) Execute(callback map[string]interface{}) (err error) {
 	logger.Debug(`Sending request to XBMC: `, callback)
-	// BUG(pdf): xbmc.Execute is not implemented yet.
-	logger.Warn(`xbmc.Execute(): Not implemented`)
+
+	ch, err := c.Request(callback[`method`].(string), callback[`params`])
+	if err != nil {
+		logger.Error(`Could not send request to XBMC: `, err)
+		return err
+	}
+
+	select {
+	case r := <-ch:
+		_, err = r.Unpack()
+		if err != nil {
+			logger.Warn(`XBMC responded: `, err)
+			return err
+		}
+	case <-time.After(1 * time.Second):
+		logger.Warn(`Timeout waiting for XBMC response`)
+	}
+
+	return
 }

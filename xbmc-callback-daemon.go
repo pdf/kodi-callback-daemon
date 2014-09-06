@@ -16,6 +16,7 @@ const (
 
 var (
 	cfg config.Config
+	x   xbmc.Connection
 )
 
 // usage simply prints the invocation requirements.
@@ -48,7 +49,7 @@ func execute(callbacks []interface{}) {
 			}
 
 		case `xbmc`:
-			xbmc.Execute(m)
+			x.Execute(m)
 
 		case `shell`:
 			shell.Execute(m)
@@ -97,7 +98,7 @@ func callbacksByType(matchType string, callbacks []interface{}) []interface{} {
 // main program loop.
 func main() {
 	// Connect to XBMC, this is required.
-	x := xbmc.Connection{}
+	x = xbmc.Connection{}
 	x.New(fmt.Sprintf(`%s:%d`, cfg.XBMC.Address, cfg.XBMC.Port))
 	defer x.Close()
 
