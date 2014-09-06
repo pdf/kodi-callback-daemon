@@ -5,7 +5,7 @@ I wrote this primarily because the Python callback interface can get blocked ver
 
 This is not an issue with `service.xbmc.callbacks` (good work `pilluli`!), but with the XBMC add-on infrastructure, and with other individual add-ons.
 
-This daemon also aims to provide more flexibility. The targeted backends are [hyperion](https://github.com/tvdzwan/hyperion), `xbmc` and `shell`. Currently, `hyperion` and `shell` are implemented, `xbmc` support will come if/when I get motivated to deal with it.
+This daemon also aims to provide more flexibility. The targeted backends are [hyperion](https://github.com/tvdzwan/hyperion), `xbmc` and `shell`.
 
 ## Backends
 ### Hyperion
