@@ -28,6 +28,15 @@ Alternatively, you make clone this repository and build it yourself.
 
 _NB: I've not actually tested Windows/OSX/FreeBSD support at all, feel free to submit bug reports_
 
+### Configure XBMC
+You must configure XBMC to accept remote control request, by enabling the
+options:
+
+- `Allow programs on this system to control XBMC`
+- `Allow programs on other systems to control XBMC`
+
+In XBMC settings at `System Settings` -> `Network` -> `Remote Control`
+
 ### Run manually
 Linux/OSX/FreeBSD:
 
