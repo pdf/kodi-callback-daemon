@@ -29,13 +29,13 @@ type Response struct {
 type qtfloat64 float64
 
 // Custom marshaller for correct float output
-func (f *qtfloat64) MarshalText() ([]byte, error) {
+func (f qtfloat64) MarshalText() ([]byte, error) {
 	v := reflect.ValueOf(f)
 	return []byte(strconv.FormatFloat(v.Float(), 'f', 6, 64)), nil
 }
 
 // Custom marshaller for correct float output
-func (f *qtfloat64) MarshalJSON() ([]byte, error) {
+func (f qtfloat64) MarshalJSON() ([]byte, error) {
 	v := reflect.ValueOf(f)
 	return []byte(strconv.FormatFloat(v.Float(), 'f', 6, 64)), nil
 }
@@ -140,6 +140,6 @@ func Execute(callback map[string]interface{}) {
 	Read(response)
 	logger.Debug(`Received response from Hyperion: `, response)
 	if response.Success == false && response.Error != nil {
-		logger.Warn(`Error received from Hyperion: `, response.Error)
+		logger.Warn(`Error received from Hyperion: `, *response.Error)
 	}
 }
