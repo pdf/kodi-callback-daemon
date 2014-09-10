@@ -1,13 +1,17 @@
 package main
 
 import (
-	`fmt`
-	`os`
-	`github.com/pdf/xbmc-callback-daemon/config`
-	`github.com/pdf/xbmc-callback-daemon/hyperion`
-	`github.com/pdf/xbmc-callback-daemon/logger`
-	`github.com/pdf/xbmc-callback-daemon/shell`
-	`github.com/pdf/xbmc-callback-daemon/xbmc`
+	"fmt"
+	"os"
+	"time"
+
+	"github.com/StreamBoat/xbmc_jsonrpc"
+	"github.com/pdf/xbmc-callback-daemon/config"
+	"github.com/pdf/xbmc-callback-daemon/hyperion"
+	"github.com/pdf/xbmc-callback-daemon/shell"
+	"github.com/pdf/xbmc-callback-daemon/xbmc"
+
+	. "github.com/pdf/xbmc-callback-daemon/log"
 )
 
 const (
@@ -16,7 +20,7 @@ const (
 
 var (
 	cfg config.Config
-	x   xbmc.Connection
+	x   xbmc_jsonrpc.Connection
 )
 
 // usage simply prints the invocation requirements.
@@ -30,9 +34,12 @@ func init() {
 	if len(os.Args) < 2 {
 		usage()
 	}
+
+	// Initialize logger
 	cfg = config.Load(os.Args[1])
-	if cfg.Debug != nil {
-		logger.DebugEnabled = *cfg.Debug
+	if cfg.Debug != nil && *cfg.Debug == true {
+		SetLogLevel(`DEBUG`)
+		xbmc_jsonrpc.SetLogLevel(`DEBUG`)
 	}
 }
 
@@ -49,13 +56,13 @@ func execute(callbacks []interface{}) {
 			}
 
 		case `xbmc`:
-			x.Execute(m)
+			xbmc.Execute(&x, m)
 
 		case `shell`:
 			shell.Execute(m)
 
 		default:
-			logger.Warn(`Unknown backend: `, m[`backend`])
+			Logger.Warning(`Unknown backend: %v`, m[`backend`])
 		}
 	}
 }
@@ -78,7 +85,7 @@ func callbacksByType(matchType string, callbacks []interface{}) []interface{} {
 			// Access internal types slice.
 			cbTypes, ok := cb[`types`].([]interface{})
 			if ok == false {
-				logger.Panic(`Couldn't understand 'types' array, check your configuration.`)
+				Logger.Fatal(`Couldn't understand 'types' array, check your configuration.`)
 			}
 			for j := range cbTypes {
 				if cbTypes[j].(string) == matchType {
@@ -97,10 +104,24 @@ func callbacksByType(matchType string, callbacks []interface{}) []interface{} {
 
 // main program loop.
 func main() {
+	// Set XBMC client log level
+	if cfg.Debug != nil && *cfg.Debug == true {
+		xbmc_jsonrpc.SetLogLevel(`debug`)
+	}
 	// Connect to XBMC, this is required.
-	x = xbmc.Connection{}
-	x.New(fmt.Sprintf(`%s:%d`, cfg.XBMC.Address, cfg.XBMC.Port))
+	xbmc_timeout := time.Duration(0)
+	if cfg.XBMC.Timeout != nil {
+		xbmc_timeout = *cfg.XBMC.Timeout
+	}
+	x, err := xbmc_jsonrpc.New(
+		fmt.Sprintf(`%s:%d`, cfg.XBMC.Address, cfg.XBMC.Port),
+		xbmc_timeout,
+	)
+
 	defer x.Close()
+	if err != nil {
+		Logger.Fatalf(`Failed to obtain XBMC connection: %v`, err)
+	}
 
 	// If the configuration specifies a Hyperion connection, use it.
 	if cfg.Hyperion != nil {

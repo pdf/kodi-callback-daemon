@@ -1,13 +1,14 @@
 package hyperion
 
 import (
-	`encoding/json`
-	`io`
-	`net`
-	`reflect`
-	`strconv`
-	`time`
-	`github.com/pdf/xbmc-callback-daemon/logger`
+	"encoding/json"
+	"io"
+	"net"
+	"reflect"
+	"strconv"
+	"time"
+
+	. "github.com/pdf/xbmc-callback-daemon/log"
 )
 
 var (
@@ -48,12 +49,12 @@ func Connect(address string) {
 	}
 	conn, err := net.Dial(`tcp`, address)
 	for err != nil {
-		logger.Error(`Connecting to Hyperion: `, err)
-		logger.Info(`Attempting reconnect...`)
+		Logger.Error(`Connecting to Hyperion: %v`, err)
+		Logger.Info(`Attempting reconnect...`)
 		time.Sleep(time.Second)
 		conn, err = net.Dial(`tcp`, address)
 	}
-	logger.Info(`Connected to Hyperion`)
+	Logger.Info(`Connected to Hyperion`)
 	encoder = json.NewEncoder(conn)
 	decoder = json.NewDecoder(conn)
 }
@@ -81,7 +82,7 @@ func coerce(key string, value interface{}) interface{} {
 	case []interface{}:
 		result, ok := value.([]interface{})
 		if ok == false {
-			logger.Panic(`Could not parse array, check configuration near `, value)
+			Logger.Fatalf(`Could not parse array, check configuration near %v`, value)
 		}
 		for i := range result {
 			result[i] = coerce(key, result[i])
@@ -90,7 +91,7 @@ func coerce(key string, value interface{}) interface{} {
 	case map[string]interface{}:
 		result, ok := value.(map[string]interface{})
 		if ok == false {
-			logger.Panic(`Could not parse object, check configuration near `, value)
+			Logger.Fatalf(`Could not parse object, check configuration near %v`, value)
 		}
 		for k, v := range result {
 			result[k] = coerce(k, v)
@@ -107,10 +108,10 @@ func Read(response *Response) {
 	// Kick off the connection again on EOF, eat any decoding errors otherwise.
 	// TODO: This probably needs to be more robust.
 	if err == io.EOF {
-		logger.Error(`Reading from Hyperion: `, err)
+		Logger.Error(`Reading from Hyperion: %v`, err)
 		Connect(connAddress)
 	} else if err != nil {
-		logger.Error(`Decoding response from Hyperion: `, err)
+		Logger.Error(`Decoding response from Hyperion: %v`, err)
 		return
 	}
 }
@@ -131,15 +132,15 @@ func Execute(callback map[string]interface{}) {
 		}
 	}
 
-	logger.Debug(`Sending request to Hyperion: `, cb)
+	Logger.Debug(`Sending request to Hyperion: %v`, cb)
 	// Encode and send request
 	if err := encoder.Encode(&cb); err != nil {
-		logger.Error(`Sending to Hyperion: `, err)
+		Logger.Error(`Sending to Hyperion: %v`, err)
 	}
 	// Check response and log any failure responses from Hyperion
 	Read(response)
-	logger.Debug(`Received response from Hyperion: `, response)
+	Logger.Debug(`Received response from Hyperion: `, response)
 	if response.Success == false && response.Error != nil {
-		logger.Warn(`Error received from Hyperion: `, *response.Error)
+		Logger.Warning(`Error received from Hyperion: `, *response.Error)
 	}
 }

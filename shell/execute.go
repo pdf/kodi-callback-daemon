@@ -1,10 +1,9 @@
 package shell
 
 import (
-	`fmt`
 	`os/exec`
 
-	`github.com/pdf/xbmc-callback-daemon/logger`
+	. `github.com/pdf/xbmc-callback-daemon/log`
 )
 
 // Execute takes the callback command and argument, and spawns the process.
@@ -26,14 +25,14 @@ func Execute(callback map[string]interface{}) {
 
 	cmd := exec.Command(bin, args...)
 
-	logger.Debug(`Executing shell command: `, cmd)
+	Logger.Debug(`Executing shell command: %v`, cmd)
 	if callback[`background`] != nil && callback[`background`] == true {
 		if err = cmd.Start(); err != nil {
-			logger.Warn(fmt.Sprintf("Failure executing command (%v): %v", cmd, err))
+			Logger.Warning(`Failure executing command (%v): %v`, cmd, err)
 		}
 	} else {
 		if err = cmd.Run(); err != nil {
-			logger.Warn(fmt.Sprintf("Failure executing command (%v): %v", cmd, err))
+			Logger.Warning(`Failure executing command (%v): %v`, cmd, err)
 		}
 	}
 }
