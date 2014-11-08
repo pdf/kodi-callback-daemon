@@ -1,7 +1,7 @@
 package xbmc
 
 import (
-	"github.com/streamboat/xbmc_jsonrpc"
+	"github.com/StreamBoat/xbmc_jsonrpc"
 
 	. "github.com/pdf/xbmc-callback-daemon/log"
 )
