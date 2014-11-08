@@ -1,0 +1,19 @@
+Source: xbmc-callback-daemon
+Section: devel
+Priority: extra
+Maintainer: Peter Fern <github@obfusc8.org>
+Build-Depends: debhelper (>= 9.1.0), golang-go | go
+Standards-Version: 3.9.4
+
+Package: xbmc-callback-daemon
+Architecture: any
+Description: A small Go daemon for processing notifications from XBMC
+ A small Go daemon that reads notifications from XBMC via the JSON-RPC socket,
+ and performs actions based on those notifications.
+
+Package: xbmc-callback-daemon-dev
+Architecture: all
+Description: A small Go daemon for processing notifications from XBMC - development package
+ A small Go daemon that reads notifications from XBMC via the JSON-RPC socket,
+ and performs actions based on those notifications.
+

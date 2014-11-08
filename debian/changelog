@@ -1,0 +1,15 @@
+xbmc-callback-daemon (0.4.0) unstable; urgency=medium
+
+  * README: xbmc backend is now implemented
+  * Extract XBMC JSON-RPC client into separate lib
+  * Fix import case for StreamBoat/xbmc_jsonrpc
+  * Update Debian packaging
+  * Bump to v0.4.0
+
+ -- Peter Fern <github@obfusc8.org>  Sun, 09 Nov 2014 09:02:15 +1100
+
+xbmc-callback-daemon (0.3.0) unstable; urgency=low
+
+  * Initial import
+
+ -- Peter Fern <github@obfusc8.org>  Sun, 09 Nov 2014 08:39:11 +1100

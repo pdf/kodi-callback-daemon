@@ -1,0 +1,80 @@
+#!/bin/sh
+
+### BEGIN INIT INFO
+# Provides:        xbmc-callback-daemon
+# Required-Start:  $network $remote_fs $syslog
+# Required-Stop:   $network $remote_fs $syslog
+# Default-Start:   2 3 4 5
+# Default-Stop:    1
+# Short-Description: XBMC callback daemon
+### END INIT INFO
+
+PATH=/sbin:/bin:/usr/sbin:/usr/bin
+
+. /lib/lsb/init-functions
+
+if init_is_upstart; then
+	upstart_job=/etc/init/$(basename ${0:-}).conf
+	if [ -f ${upstart_job:-} ] && [ ! -L ${upstart_job:-} ]; then
+		if [ -f /lib/init/upstart-job ] ; then
+			. /lib/init/upstart-job
+			exit $?
+		else
+			case "${1:-}" in
+				start|restart|force-reload)
+					exit 1
+					;;
+				stop)
+					exit 0
+					;;
+			esac
+		fi
+	fi
+fi
+
+DAEMON=/usr/bin/xbmc-callback-daemon
+DAEMON_NAME="XBMC callback daemon"
+PIDFILE=/var/run/xbmc-callback-daemon.pid
+
+test -x $DAEMON || exit 5
+
+CONFIGFILE=/etc/xbmc-callback-daemon.json
+
+if [ -r /etc/default/xbmc-callback-daemon ]; then
+	. /etc/default/xbmc-callback-daemon
+fi
+
+case $1 in
+	start)
+		log_daemon_msg "Starting $DAEMON_NAME"
+  		start-stop-daemon --start --background --quiet --make-pidfile --pidfile $PIDFILE --startas $DAEMON -- $CONFIGFILE
+		status=$?
+		log_end_msg $status
+  		;;
+	stop)
+		log_daemon_msg "Stopping $DAEMON_NAME"
+  		start-stop-daemon --stop --quiet --pidfile $PIDFILE
+		log_end_msg $?
+		[ -f $PIDFILE ] && rm -f $PIDFILE
+  		;;
+	restart|force-reload)
+		$0 stop && sleep 2 && $0 start
+  		;;
+	try-restart)
+		if $0 status >/dev/null; then
+			$0 restart
+		else
+			exit 0
+		fi
+		;;
+	reload)
+		exit 3
+		;;
+	status)
+		status_of_proc $DAEMON "$DAEMON_NAME"
+		;;
+	*)
+		echo "Usage: $0 {start|stop|restart|try-restart|force-reload|status}"
+		exit 2
+		;;
+esac
