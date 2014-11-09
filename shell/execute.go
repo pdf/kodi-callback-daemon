@@ -30,6 +30,11 @@ func Execute(callback map[string]interface{}) {
 		if err = cmd.Start(); err != nil {
 			Logger.Warning(`Failure executing command (%v): %v`, cmd, err)
 		}
+		go func() {
+			if err = cmd.Wait(); err != nil {
+				Logger.Warning(`Background command exited with error (%v): %v`, cmd, err)
+			}
+		}()
 	} else {
 		if err = cmd.Run(); err != nil {
 			Logger.Warning(`Failure executing command (%v): %v`, cmd, err)
