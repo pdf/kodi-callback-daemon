@@ -28,8 +28,7 @@ Alternatively, you make clone this repository and build it yourself.
 _NB: I've not actually tested Windows/OSX/FreeBSD support at all, feel free to submit bug reports_
 
 ### Configure XBMC
-You must configure XBMC to accept remote control request, by enabling the
-options:
+You must configure XBMC to accept remote control request, by enabling the options:
 
 - `Allow programs on this system to control XBMC`
 - `Allow programs on other systems to control XBMC`
@@ -49,8 +48,14 @@ Windows:
 C:\Path\To\xbmc-callback-daemon.exe C:\Path\To\configFile.json
 ```
 
-### Upstart
-There are Upstart init scripts available in [contrib](https://github.com/pdf/xbmc-callback-daemon/tree/master/contrib/upstart).  Just copy `xbmc-callback-daemon.conf` to `/etc/init/xbmc-callback-daemon.conf` and `default` to `/etc/default/xbmc-callback-daemon`, then place your config file at `/etc/xbmc-callback-daemon.json`.  Contributions welcome for SysV/SystemD/etc.
+### Debian/Ubuntu/derivs
+The deb packages include SysV and Upstart init scripts - enable and use them in the standard fashion.  You will need to add your configuration file at:
+
+```
+/etc/xbmc-callback-daemon.json
+```
+
+Alternatively, you may edit `/etc/default/xbmc-callback-daemon` and set the path to your configuration file there.
 
 ### XBMC autoexec.py
 You might alternatively start the daemon from XBMC's `autostart.py`.  Simply edit `userdata/autoexec.py` in your XBMC directory (ie `~/.xbmc/userdata/autoexec.py` on \*nix systems), and add the following:
@@ -74,6 +79,8 @@ subprocess.Popen(['C:\\Path\\To\\xbmc-callback-daemon.exe', 'C:\\Path\\To\\confi
 ```
 
 Note the double-slashes necessary for escaping the Windows paths in Python strings.
+
+_Note: If you're using this method, you'll also want to make sure that the daemon is killed on XBMC exit or startup, otherwise you'll get multiple copies running and they'll fight for resources.  I'm not a Python guy, so I'm open to suggestions on how to best handle this._
 
 ## User support
 If you have questions on how to use the daemon, you may post them in the [XBMC forum thread](http://forum.xbmc.org/showthread.php?tid=194910).
