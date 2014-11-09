@@ -156,7 +156,7 @@ Callbacks using the `hyperion` backend contain the `backend` property, and all o
 }
 ```
 
-(see the [Hyperion JSON scemas](https://github.com/tvdzwan/hyperion/tree/master/libsrc/jsonserver/schema) for details on the required fields).
+(see the [Hyperion JSON schemas](https://github.com/tvdzwan/hyperion/tree/master/libsrc/jsonserver/schema) for details on the required fields).
 
 And if we wanted to run this callback on `Startup`, and on `Player.OnStop` notifications, our full configuration might look like this:
 
