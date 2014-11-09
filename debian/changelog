@@ -1,3 +1,10 @@
+xbmc-callback-daemon (0.4.1) unstable; urgency=medium
+
+  * README: Deb packages now include init scripts
+  * Clean up backgrounded process resources
+
+ -- Peter Fern <github@obfusc8.org>  Mon, 10 Nov 2014 01:12:42 +1100
+
 xbmc-callback-daemon (0.4.0) unstable; urgency=medium
 
   * README: xbmc backend is now implemented
