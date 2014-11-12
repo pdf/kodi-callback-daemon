@@ -1,3 +1,12 @@
+xbmc-callback-daemon (0.4.2) unstable; urgency=high
+
+  * README: typo
+  * Bump to v0.4.2
+    - Add Godeps
+    - Use xbmc_jsonrpc v0.0.3
+
+ -- Peter Fern <github@obfusc8.org>  Thu, 13 Nov 2014 02:13:13 +1100
+
 xbmc-callback-daemon (0.4.1) unstable; urgency=medium
 
   * README: Deb packages now include init scripts

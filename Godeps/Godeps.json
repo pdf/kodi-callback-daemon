@@ -1,0 +1,19 @@
+{
+	"ImportPath": "github.com/pdf/xbmc-callback-daemon",
+	"GoVersion": "go1.3.3",
+	"Deps": [
+		{
+			"ImportPath": "github.com/StreamBoat/xbmc_jsonrpc",
+			"Comment": "v0.0.3",
+			"Rev": "75363ecf928478d50dc8d4b90346e2c278eb3002"
+		},
+		{
+			"ImportPath": "github.com/mitchellh/mapstructure",
+			"Rev": "6fb2c832bcac61d01212ab1d172f7a14a8585b07"
+		},
+		{
+			"ImportPath": "github.com/op/go-logging",
+			"Rev": "06b24434bba6c80f1807aeb19d3cf62051c0a636"
+		}
+	]
+}
