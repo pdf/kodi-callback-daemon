@@ -1,3 +1,10 @@
+xbmc-callback-daemon (0.4.3) unstable; urgency=medium
+
+  * Slightly tweak gitignore for Godep
+  * Handle net errors for Hyperion and pull in xbmc_jsonrpc v0.0.4
+
+ -- Peter Fern <github@obfusc8.org>  Sun, 16 Nov 2014 02:10:33 +1100
+
 xbmc-callback-daemon (0.4.2) unstable; urgency=high
 
   * README: typo
