@@ -107,7 +107,7 @@ func Read(response *Response) {
 	err := decoder.Decode(&response)
 	// Kick off the connection again on EOF, eat any decoding errors otherwise.
 	// TODO: This probably needs to be more robust.
-	if err == io.EOF {
+	if _, ok := err.(net.Error); err == io.EOF || ok {
 		Logger.Error(`Reading from Hyperion: %v`, err)
 		Connect(connAddress)
 	} else if err != nil {
@@ -134,7 +134,12 @@ func Execute(callback map[string]interface{}) {
 
 	Logger.Debug(`Sending request to Hyperion: %v`, cb)
 	// Encode and send request
-	if err := encoder.Encode(&cb); err != nil {
+	err := encoder.Encode(&cb)
+	if _, ok := err.(net.Error); ok {
+		Logger.Error(`Writing to Hyperion: %v`, err)
+		Connect(connAddress)
+		encoder.Encode(&cb)
+	} else if err != nil {
 		Logger.Error(`Sending to Hyperion: %v`, err)
 	}
 	// Check response and log any failure responses from Hyperion

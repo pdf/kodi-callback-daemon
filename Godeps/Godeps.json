@@ -4,8 +4,8 @@
 	"Deps": [
 		{
 			"ImportPath": "github.com/StreamBoat/xbmc_jsonrpc",
-			"Comment": "v0.0.3",
-			"Rev": "75363ecf928478d50dc8d4b90346e2c278eb3002"
+			"Comment": "v0.0.4",
+			"Rev": "d5019b64cafecb0c4cfdabe074f59d7571b7e161"
 		},
 		{
 			"ImportPath": "github.com/mitchellh/mapstructure",
