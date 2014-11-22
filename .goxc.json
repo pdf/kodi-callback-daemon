@@ -1,7 +1,7 @@
 {
 	"AppName": "xbmc-callback-daemon",
 	"ArtifactsDest": "../xbmc-callback-daemon-jekyll",
-  "BuildConstraints": "!plan9,!netbsd,!openbsd",
+  "BuildConstraints": "!plan9,!netbsd,!openbsd,!dragonfly,!solaris",
 	"ConfigVersion": "0.9",
 	"Tasks": [
 		"interpolate-source",
@@ -24,6 +24,6 @@
 		"LdFlags": "-s"
 	},
 	"Env": [
-		"GOPATH=Godeps{{.PLS}}{{.Env.GOPATH}}"
+		"GOPATH={{.Env.PWD}}{{.PS}}Godeps{{.PS}}_workspace{{.PLS}}src{{.PLS}}{{.Env.GOPATH}}"
 	]
 }
