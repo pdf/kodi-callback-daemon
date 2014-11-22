@@ -9,8 +9,8 @@
 		},
 		{
 			"ImportPath": "github.com/StreamBoat/xbmc_jsonrpc",
-			"Comment": "v0.0.4",
-			"Rev": "d5019b64cafecb0c4cfdabe074f59d7571b7e161"
+			"Comment": "1.0.0-1-g1843443",
+			"Rev": "18434430540e1c3096aeae2a69e29613499d1ff3"
 		},
 		{
 			"ImportPath": "github.com/mitchellh/mapstructure",

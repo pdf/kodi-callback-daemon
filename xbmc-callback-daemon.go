@@ -39,10 +39,8 @@ func init() {
 	cfg = config.Load(os.Args[1])
 	if cfg.Debug != nil && *cfg.Debug == true {
 		log.SetLevel(log.DebugLevel)
-		xbmc_jsonrpc.SetLogLevel(`DEBUG`)
 	} else {
 		log.SetLevel(log.InfoLevel)
-		xbmc_jsonrpc.SetLogLevel(`DEBUG`)
 	}
 }
 
@@ -107,10 +105,6 @@ func callbacksByType(matchType string, callbacks []interface{}) []interface{} {
 
 // main program loop.
 func main() {
-	// Set XBMC client log level
-	if cfg.Debug != nil && *cfg.Debug == true {
-		xbmc_jsonrpc.SetLogLevel(`debug`)
-	}
 	// Connect to XBMC, this is required.
 	xbmc_timeout := time.Duration(0)
 	if cfg.XBMC.Timeout != nil {
