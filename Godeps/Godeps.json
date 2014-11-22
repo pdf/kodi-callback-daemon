@@ -3,6 +3,11 @@
 	"GoVersion": "go1.3.3",
 	"Deps": [
 		{
+			"ImportPath": "github.com/Sirupsen/logrus",
+			"Comment": "v0.6.0-5-gf92b795",
+			"Rev": "f92b7950b372b1db80bd3527e4d40e42555fe6c2"
+		},
+		{
 			"ImportPath": "github.com/StreamBoat/xbmc_jsonrpc",
 			"Comment": "v0.0.4",
 			"Rev": "d5019b64cafecb0c4cfdabe074f59d7571b7e161"
@@ -10,10 +15,6 @@
 		{
 			"ImportPath": "github.com/mitchellh/mapstructure",
 			"Rev": "6fb2c832bcac61d01212ab1d172f7a14a8585b07"
-		},
-		{
-			"ImportPath": "github.com/op/go-logging",
-			"Rev": "06b24434bba6c80f1807aeb19d3cf62051c0a636"
 		}
 	]
 }

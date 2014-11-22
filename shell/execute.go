@@ -3,7 +3,7 @@ package shell
 import (
 	`os/exec`
 
-	. `github.com/pdf/xbmc-callback-daemon/log`
+	log "github.com/Sirupsen/logrus"
 )
 
 // Execute takes the callback command and argument, and spawns the process.
@@ -25,19 +25,28 @@ func Execute(callback map[string]interface{}) {
 
 	cmd := exec.Command(bin, args...)
 
-	Logger.Debug(`Executing shell command: %v`, cmd)
+	log.WithField(`command`, cmd).Debug(`Executing shell command`)
 	if callback[`background`] != nil && callback[`background`] == true {
 		if err = cmd.Start(); err != nil {
-			Logger.Warning(`Failure executing command (%v): %v`, cmd, err)
+			log.WithFields(log.Fields{
+				`command`: cmd,
+				`error`:   err,
+			}).Warn(`Failure executing shell command`)
 		}
 		go func() {
 			if err = cmd.Wait(); err != nil {
-				Logger.Warning(`Background command exited with error (%v): %v`, cmd, err)
+				log.WithFields(log.Fields{
+					`command`: cmd,
+					`error`:   err,
+				}).Warn(`Background shell command exited with error`)
 			}
 		}()
 	} else {
 		if err = cmd.Run(); err != nil {
-			Logger.Warning(`Failure executing command (%v): %v`, cmd, err)
+			log.WithFields(log.Fields{
+				`command`: cmd,
+				`error`:   err,
+			}).Warn(`Failure executing command`)
 		}
 	}
 }

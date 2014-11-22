@@ -3,13 +3,13 @@ package xbmc
 import (
 	"github.com/StreamBoat/xbmc_jsonrpc"
 
-	. "github.com/pdf/xbmc-callback-daemon/log"
+	log "github.com/Sirupsen/logrus"
 )
 
 // Execute takes an XBMC JSON-RPC Connection and a callback, and performs the
 // RPC request contained in the callback
 func Execute(x *xbmc_jsonrpc.Connection, callback map[string]interface{}) {
-	Logger.Debug(`Sending request to XBMC: %v`, callback)
+	log.WithField(`request`, callback).Debug(`Sending to XBMC`)
 
 	req := xbmc_jsonrpc.Request{}
 	req.Method = callback[`method`].(string)

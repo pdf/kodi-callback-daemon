@@ -5,7 +5,7 @@ import (
 	"os"
 	"time"
 
-	. "github.com/pdf/xbmc-callback-daemon/log"
+	log "github.com/Sirupsen/logrus"
 )
 
 // address contains the IP address and port for TCP/UDP connections.
@@ -28,13 +28,13 @@ type Config struct {
 func Load(filename string) Config {
 	file, err := os.Open(filename)
 	if err != nil {
-		Logger.Fatalf(`Opening config file: %v`, err)
+		log.WithField(`error`, err).Fatal(`Opening config file`)
 	}
 
 	dec := json.NewDecoder(file)
 	conf := Config{}
 	if err = dec.Decode(&conf); err != nil {
-		Logger.Fatalf(`Parsing config file: %v`, err)
+		log.WithField(`error`, err).Fatal(`Parsing config file`)
 	}
 
 	return conf

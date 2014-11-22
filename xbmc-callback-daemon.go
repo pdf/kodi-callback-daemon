@@ -11,7 +11,7 @@ import (
 	"github.com/pdf/xbmc-callback-daemon/shell"
 	"github.com/pdf/xbmc-callback-daemon/xbmc"
 
-	. "github.com/pdf/xbmc-callback-daemon/log"
+	log "github.com/Sirupsen/logrus"
 )
 
 const (
@@ -38,7 +38,10 @@ func init() {
 	// Initialize logger
 	cfg = config.Load(os.Args[1])
 	if cfg.Debug != nil && *cfg.Debug == true {
-		SetLogLevel(`DEBUG`)
+		log.SetLevel(log.DebugLevel)
+		xbmc_jsonrpc.SetLogLevel(`DEBUG`)
+	} else {
+		log.SetLevel(log.InfoLevel)
 		xbmc_jsonrpc.SetLogLevel(`DEBUG`)
 	}
 }
@@ -62,7 +65,7 @@ func execute(callbacks []interface{}) {
 			shell.Execute(m)
 
 		default:
-			Logger.Warning(`Unknown backend: %v`, m[`backend`])
+			log.WithField(`backend`, m[`backend`]).Warn(`Unknown backend`)
 		}
 	}
 }
@@ -85,7 +88,7 @@ func callbacksByType(matchType string, callbacks []interface{}) []interface{} {
 			// Access internal types slice.
 			cbTypes, ok := cb[`types`].([]interface{})
 			if ok == false {
-				Logger.Fatal(`Couldn't understand 'types' array, check your configuration.`)
+				log.Fatal(`Couldn't understand 'types' array, check your configuration.`)
 			}
 			for j := range cbTypes {
 				if cbTypes[j].(string) == matchType {
@@ -120,7 +123,7 @@ func main() {
 
 	defer x.Close()
 	if err != nil {
-		Logger.Fatalf(`Failed to obtain XBMC connection: %v`, err)
+		log.WithField(`error`, err).Fatal(`Failed to obtain XBMC connection`)
 	}
 
 	// If the configuration specifies a Hyperion connection, use it.
