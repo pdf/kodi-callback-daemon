@@ -39,14 +39,16 @@ PIDFILE=/var/run/kodi-callback-daemon.pid
 test -x $DAEMON || exit 5
 
 CONFIGFILE=/etc/kodi-callback-daemon.json
+OLDCONFIGFILE=/etc/xbmc-callback-daemon.json
 
 if [ -r /etc/default/kodi-callback-daemon ]; then
 	. /etc/default/kodi-callback-daemon
 fi
 
 # TODO: Remove this deprecated config handling at some stage in the future
-if [ -f /etc/xbmc-callback-daemon.json -a "${CONFIGFILE}" = "/etc/kodi-callback-daemon.json" ]; then
-	CONFIGFILE=/etc/xbmc-callback-daemon.json
+if [ -f "${OLDCONFIGFILE}" -a "${CONFIGFILE}" = "/etc/kodi-callback-daemon.json" ]; then
+	echo "WARNING: Using deprecated config file '${OLDCONFIGFILE}'" >&2
+	CONFIGFILE="${OLDCONFIGFILE}"
 fi
 
 case $1 in
