@@ -1,3 +1,18 @@
+kodi-callback-daemon (1.0.0) unstable; urgency=medium
+
+  * Use logrus for structured logging
+  * Update to xbmc_jsonrpc v1.0.0
+  * Add some extra platforms to goxc ignore list, update Godeps path
+  * :house:(core): Rename from XBMC to Kodi, best to get this out of the way
+    :warning: The change in package name requires users to uninstall the old package and replace it
+  * :house:(libs): Update to kodi_jsonrpc v1.0.1
+  * :house:(build): Add config for abe33/changelog-gen.
+    TODO: Add contribution guidelines for commit messages
+  * Bump to version :100: for kodi name change
+  * Add warning to init scripts when using deprecated config file
+
+ -- Peter Fern <github@obfusc8.org>  Sun, 23 Nov 2014 20:13:22 +1100
+
 xbmc-callback-daemon (0.4.3) unstable; urgency=medium
 
   * Slightly tweak gitignore for Godep

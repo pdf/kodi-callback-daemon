@@ -7,6 +7,9 @@ This is not an issue with `service.xbmc.callbacks` (good work `pilluli`!), but w
 
 This daemon also aims to provide more flexibility. The targeted backends are [hyperion](https://github.com/tvdzwan/hyperion), `kodi` and `shell`.
 
+## Upgrading to v1.0.0
+Due to the name change to keep in line with XBMC's new name Kodi, if you have the previous package installed as `xbmc-callback-daemon`, you should uninstall it before installing the new `kodi-callback-daemon`.  The init scripts should handle your existing `/etc/xbmc-callback-daemon.json` config file, but you're encouraged to move this to the new location `/etc/kodi-callback-daemon.json` as this feature may go away in future to avoid confusion.
+
 ## Backends
 ### Hyperion
 The Hyperion backend submits callbacks via the JSON interface. This interface is also used by the `hyperion-remote` command-line utility. There's no end-user documentation for this interface, so when writing callbacks, your best bet is to simply read the [JSON schemas](https://github.com/tvdzwan/hyperion/tree/master/libsrc/jsonserver/schema) in the source tree.
