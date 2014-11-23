@@ -24,7 +24,7 @@ The shell backend simply executes a command on the system with specified argumen
 ## Installation
 Grab the [Latest Release](https://github.com/pdf/kodi-callback-daemon/releases/latest) as a compiled binary and either install it using your package manager (Debian/Ubuntu/derivs, via the `.deb` package), or extract `kodi-callback-daemon` to somewhere on your path (eg - `/usr/local/bin`) on Linux/OSX/FreeBSD, or where ever on Windows.
 
-Alternatively, you make clone this repository and build it yourself.
+Alternatively, you may clone this repository and build it yourself.
 
 ## Usage
 
