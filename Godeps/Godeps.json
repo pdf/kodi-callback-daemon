@@ -9,8 +9,8 @@
 		},
 		{
 			"ImportPath": "github.com/StreamBoat/kodi_jsonrpc",
-			"Comment": "v1.0.0-2-gdab687a",
-			"Rev": "dab687a5fda5a8f2eb7c8817f3cf446defe6e4ec"
+			"Comment": "v1.0.1-1-gb55486d",
+			"Rev": "b55486dfd1a7a6251175d0526302c5d6935a477d"
 		},
 		{
 			"ImportPath": "github.com/mitchellh/mapstructure",
