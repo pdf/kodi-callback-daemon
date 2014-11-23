@@ -1,5 +1,5 @@
 {
-	"ImportPath": "github.com/pdf/xbmc-callback-daemon",
+	"ImportPath": "github.com/pdf/kodi-callback-daemon",
 	"GoVersion": "go1.3.3",
 	"Deps": [
 		{
@@ -8,9 +8,9 @@
 			"Rev": "f92b7950b372b1db80bd3527e4d40e42555fe6c2"
 		},
 		{
-			"ImportPath": "github.com/StreamBoat/xbmc_jsonrpc",
-			"Comment": "1.0.0-1-g1843443",
-			"Rev": "18434430540e1c3096aeae2a69e29613499d1ff3"
+			"ImportPath": "github.com/StreamBoat/kodi_jsonrpc",
+			"Comment": "v1.0.0-2-gdab687a",
+			"Rev": "dab687a5fda5a8f2eb7c8817f3cf446defe6e4ec"
 		},
 		{
 			"ImportPath": "github.com/mitchellh/mapstructure",

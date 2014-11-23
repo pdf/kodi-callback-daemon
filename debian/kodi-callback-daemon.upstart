@@ -1,0 +1,26 @@
+## Kodi/XBMC callback daemon
+
+description "Kodi/XBMC callback daemon (performs actions based on Kodi/XBMC events)"
+author "Peter Fern"
+
+start on runlevel [2345]
+stop on runlevel [!2345]
+
+respawn
+
+env DEFAULTFILE=/etc/default/kodi-callback-daemon
+env CONFIGFILE=/etc/kodi-callback-daemon.json
+
+script
+	if [ -f "$DEFAULTFILE" ]; then
+	    . "$DEFAULTFILE"
+	fi
+	# TODO: Remove this deprecated config handling at some stage in the future
+	if [ -f /etc/xbmc-callback-daemon.json -a "${CONFIGFILE}" = "/etc/kodi-callback-daemon.json" ]; then
+		CONFIGFILE=/etc/xbmc-callback-daemon.json
+	fi
+
+	exec kodi-callback-daemon $CONFIGFILE
+end script
+
+post-stop exec sleep 1

@@ -8,17 +8,18 @@ import (
 	log "github.com/Sirupsen/logrus"
 )
 
-// address contains the IP address and port for TCP/UDP connections.
-type address struct {
-	Address string         `json:"address"`
-	Port    uint16         `json:"port"`
-	Timeout *time.Duration `json:"timeout"`
+// Host contains the IP address, port and timeout for TCP/UDP connections.
+type Host struct {
+	Address string         `json:"address"` // Required
+	Port    uint16         `json:"port"`    // Required
+	Timeout *time.Duration `json:"timeout"` // Optional
 }
 
 // Config stores the json configuration structure.
 type Config struct {
-	XBMC      address     `json:"xbmc"`      // Required
-	Hyperion  *address    `json:"hyperion"`  // Optional
+	XBMC      *Host       `json:"xbmc"`      // Deprecated
+	Kodi      *Host       `json:"kodi"`      // Required (if XBMC not provided)
+	Hyperion  *Host       `json:"hyperion"`  // Optional
 	Debug     *bool       `json:"debug"`     // Optional
 	Callbacks interface{} `json:"callbacks"` // Required
 }

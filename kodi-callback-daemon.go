@@ -5,11 +5,11 @@ import (
 	"os"
 	"time"
 
-	"github.com/StreamBoat/xbmc_jsonrpc"
-	"github.com/pdf/xbmc-callback-daemon/config"
-	"github.com/pdf/xbmc-callback-daemon/hyperion"
-	"github.com/pdf/xbmc-callback-daemon/shell"
-	"github.com/pdf/xbmc-callback-daemon/xbmc"
+	"github.com/StreamBoat/kodi_jsonrpc"
+	"github.com/pdf/kodi-callback-daemon/config"
+	"github.com/pdf/kodi-callback-daemon/hyperion"
+	"github.com/pdf/kodi-callback-daemon/kodi"
+	"github.com/pdf/kodi-callback-daemon/shell"
 
 	log "github.com/Sirupsen/logrus"
 )
@@ -20,12 +20,12 @@ const (
 
 var (
 	cfg config.Config
-	x   xbmc_jsonrpc.Connection
+	k   kodi_jsonrpc.Connection
 )
 
 // usage simply prints the invocation requirements.
 func usage() {
-	fmt.Fprintf(os.Stderr, "\nXBMC Callback Daemon v%s\n\nUsage: %s [configFile]\n\n", VERSION, os.Args[0])
+	fmt.Fprintf(os.Stderr, "\nKodi Callback Daemon v%s\n\nUsage: %s [configFile]\n\n", VERSION, os.Args[0])
 	os.Exit(1)
 }
 
@@ -56,8 +56,8 @@ func execute(callbacks []interface{}) {
 				hyperion.Execute(m)
 			}
 
-		case `xbmc`:
-			xbmc.Execute(&x, m)
+		case `kodi`, `xbmc`:
+			kodi.Execute(&k, m)
 
 		case `shell`:
 			shell.Execute(m)
@@ -105,19 +105,30 @@ func callbacksByType(matchType string, callbacks []interface{}) []interface{} {
 
 // main program loop.
 func main() {
-	// Connect to XBMC, this is required.
-	xbmc_timeout := time.Duration(0)
-	if cfg.XBMC.Timeout != nil {
-		xbmc_timeout = *cfg.XBMC.Timeout
+	var host config.Host
+	// Connect to Kodi, this is required.
+	kodi_timeout := time.Duration(0)
+	if cfg.Kodi != nil {
+		if cfg.Kodi.Timeout != nil {
+			kodi_timeout = *cfg.Kodi.Timeout
+		}
+		host = *cfg.Kodi
+	} else if cfg.XBMC != nil {
+		if cfg.XBMC.Timeout != nil {
+			kodi_timeout = *cfg.XBMC.Timeout
+		}
+		host = *cfg.XBMC
+	} else {
+		log.Fatal(`You must provide Kodi/XBMC connection details in your configuration`)
 	}
-	x, err := xbmc_jsonrpc.New(
-		fmt.Sprintf(`%s:%d`, cfg.XBMC.Address, cfg.XBMC.Port),
-		xbmc_timeout,
+	k, err := kodi_jsonrpc.New(
+		fmt.Sprintf(`%s:%d`, host.Address, host.Port),
+		kodi_timeout,
 	)
 
-	defer x.Close()
+	defer k.Close()
 	if err != nil {
-		log.WithField(`error`, err).Fatal(`Failed to obtain XBMC connection`)
+		log.WithField(`error`, err).Fatal(`Failed to obtain Kodi connection`)
 	}
 
 	// If the configuration specifies a Hyperion connection, use it.
@@ -134,12 +145,12 @@ func main() {
 		execute(callbacks[`Startup`].([]interface{}))
 	}
 
-	// Loop while reading from XBMC.
+	// Loop while reading from Kodi.
 	for {
-		// Read from XBMC.
-		notification := <-x.Notifications
+		// Read from Kodi.
+		notification := <-k.Notifications
 
-		// Match XBMC notification to our configured callbacks.
+		// Match Kodi notification to our configured callbacks.
 		if callbacks[notification.Method] != nil {
 			cbs := callbacks[notification.Method].([]interface{})
 			// The Player.OnPlay notification supports an filtering by item type.

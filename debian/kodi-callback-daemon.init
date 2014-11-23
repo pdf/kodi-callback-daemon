@@ -1,12 +1,12 @@
 #!/bin/sh
 
 ### BEGIN INIT INFO
-# Provides:        xbmc-callback-daemon
+# Provides:        kodi-callback-daemon
 # Required-Start:  $network $remote_fs $syslog
 # Required-Stop:   $network $remote_fs $syslog
 # Default-Start:   2 3 4 5
 # Default-Stop:    1
-# Short-Description: XBMC callback daemon
+# Short-Description: Kodi/XBMC callback daemon
 ### END INIT INFO
 
 PATH=/sbin:/bin:/usr/sbin:/usr/bin
@@ -32,16 +32,21 @@ if init_is_upstart; then
 	fi
 fi
 
-DAEMON=/usr/bin/xbmc-callback-daemon
-DAEMON_NAME="XBMC callback daemon"
-PIDFILE=/var/run/xbmc-callback-daemon.pid
+DAEMON=/usr/bin/kodi-callback-daemon
+DAEMON_NAME="Kodi/XBMC callback daemon"
+PIDFILE=/var/run/kodi-callback-daemon.pid
 
 test -x $DAEMON || exit 5
 
-CONFIGFILE=/etc/xbmc-callback-daemon.json
+CONFIGFILE=/etc/kodi-callback-daemon.json
 
-if [ -r /etc/default/xbmc-callback-daemon ]; then
-	. /etc/default/xbmc-callback-daemon
+if [ -r /etc/default/kodi-callback-daemon ]; then
+	. /etc/default/kodi-callback-daemon
+fi
+
+# TODO: Remove this deprecated config handling at some stage in the future
+if [ -f /etc/xbmc-callback-daemon.json -a "${CONFIGFILE}" = "/etc/kodi-callback-daemon.json" ]; then
+	CONFIGFILE=/etc/xbmc-callback-daemon.json
 fi
 
 case $1 in

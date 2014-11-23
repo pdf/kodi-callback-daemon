@@ -1,0 +1,3 @@
+#!/bin/sh -e
+
+service kodi-callback-daemon stop

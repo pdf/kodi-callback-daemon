@@ -6,7 +6,7 @@
 
 export GOPATH=$(CURDIR)::/usr/share/gocode
 
-PKGDIR=debian/xbmc-callback-daemon
+PKGDIR=debian/kodi-callback-daemon
 
 %:
 	dh $@

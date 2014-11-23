@@ -102,7 +102,7 @@ func coerce(key string, value interface{}) interface{} {
 	}
 }
 
-// Read and decode JSON from the XBMC connection into the notification pointer.
+// Read and decode JSON from the Hyperion connection into the notification pointer.
 func Read(response *Response) {
 	err := decoder.Decode(&response)
 	// Kick off the connection again on EOF, eat any decoding errors otherwise.

@@ -1,6 +1,6 @@
 {
-	"AppName": "xbmc-callback-daemon",
-	"ArtifactsDest": "../xbmc-callback-daemon-jekyll",
+	"AppName": "kodi-callback-daemon",
+	"ArtifactsDest": "../kodi-callback-daemon-jekyll",
   "BuildConstraints": "!plan9,!netbsd,!openbsd,!dragonfly,!solaris",
 	"ConfigVersion": "0.9",
 	"Tasks": [
@@ -13,10 +13,10 @@
 	"TaskSettings": {
 		"deb": {
       "other-mapped-files": {
-        "/etc/init.d/xbmc-callback-daemon": "debian/xbmc-callback-daemon.init",
-        "/etc/init/xbmc-callback-daemon.conf": "debian/xbmc-callback-daemon.upstart",
-        "/etc/default/xbmc-callback-daemon": "debian/xbmc-callback-daemon.default",
-        "/usr/share/doc/xbmc-callback-daemon/xbmc-callback-daemon.example.json": "contrib/config.example.json"
+        "/etc/init.d/kodi-callback-daemon": "debian/kodi-callback-daemon.init",
+        "/etc/init/kodi-callback-daemon.conf": "debian/kodi-callback-daemon.upstart",
+        "/etc/default/kodi-callback-daemon": "debian/kodi-callback-daemon.default",
+        "/usr/share/doc/kodi-callback-daemon/kodi-callback-daemon.example.json": "contrib/config.example.json"
       }
 		}
 	},
