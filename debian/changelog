@@ -1,3 +1,9 @@
+kodi-callback-daemon (1.0.1) unstable; urgency=medium
+
+  * :house:(libs): Update kodi_jsonrpc to v1.0.3 for bugfixes
+
+ -- Peter Fern <github@obfusc8.org>  Tue, 25 Nov 2014 12:09:17 +1100
+
 kodi-callback-daemon (1.0.0) unstable; urgency=medium
 
   * Use logrus for structured logging
@@ -8,7 +14,6 @@ kodi-callback-daemon (1.0.0) unstable; urgency=medium
   * :house:(libs): Update to kodi_jsonrpc v1.0.1
   * :house:(build): Add config for abe33/changelog-gen.
     TODO: Add contribution guidelines for commit messages
-  * Bump to version :100: for kodi name change
   * Add warning to init scripts when using deprecated config file
 
  -- Peter Fern <github@obfusc8.org>  Sun, 23 Nov 2014 20:13:22 +1100
