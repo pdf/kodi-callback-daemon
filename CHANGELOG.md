@@ -1,4 +1,13 @@
 
+<a name="v1.0.2"></a>
+# v1.0.2 (2015-03-17)
+
+## :house: Housekeeping
+
+- **libs**:
+  - Update kodi_jsonrpc to v2.0.0 ([fb1ce3ad](https://github.com/pdf/kodi-callback-daemon/commit/fb1ce3ad7adec8c186cb73898bbddbf22b4f9dd1))
+
+
 <a name="v1.0.1"></a>
 # v1.0.1 (2014-11-25)
 
