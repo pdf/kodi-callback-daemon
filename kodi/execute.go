@@ -17,5 +17,7 @@ func Execute(k *kodi_jsonrpc.Connection, callback map[string]interface{}) {
 		params := callback[`params`].(map[string]interface{})
 		req.Params = &params
 	}
-	_ = k.Send(req, false)
+	if _, err := k.Send(req, false); err != nil {
+		log.WithField(`request`, callback).Error(`Failed sending to Kodi`)
+	}
 }

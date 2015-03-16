@@ -1,6 +1,6 @@
 {
 	"ImportPath": "github.com/pdf/kodi-callback-daemon",
-	"GoVersion": "go1.3.3",
+	"GoVersion": "go1.4",
 	"Deps": [
 		{
 			"ImportPath": "github.com/Sirupsen/logrus",
@@ -9,8 +9,8 @@
 		},
 		{
 			"ImportPath": "github.com/StreamBoat/kodi_jsonrpc",
-			"Comment": "v1.0.3-1-g7c1a1b0",
-			"Rev": "7c1a1b0ee91c0ed7d96f3d5419c8b46f8c84bd65"
+			"Comment": "v2.0.0",
+			"Rev": "9fe049d003a71b89c187bfa6ae9765a4bb4749dc"
 		},
 		{
 			"ImportPath": "github.com/mitchellh/mapstructure",
