@@ -1,6 +1,6 @@
 {
 	"AppName": "kodi-callback-daemon",
-	"ArtifactsDest": "../kodi-callback-daemon-jekyll",
+	"ArtifactsDest": "build",
 	"Tasks": [
 		"interpolate-source",
 		"default",
@@ -8,7 +8,7 @@
 		"publish-github",
 		"tag"
 	],
-	"BuildConstraints": "!plan9,!netbsd,!openbsd,!dragonfly,!solaris",
+	"BuildConstraints": "!plan9,!netbsd,!openbsd,!dragonfly,!solaris,!nacl",
 	"MainDirsExclude": ".vendor",
 	"PackageVersion": "1.0.3",
 	"TaskSettings": {
