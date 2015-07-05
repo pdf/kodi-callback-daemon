@@ -1,3 +1,5 @@
-kodi-callback-daemon
 .vendor/
 build/
+
+kodi-callback-daemon
+.goxc.local.json
