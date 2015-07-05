@@ -1,4 +1,13 @@
 
+<a name="v1.0.4"></a>
+# v1.0.4 (2015-07-05)
+
+## :arrow_up: Dependency Updates
+
+- **core**:
+  - Update kodi_jsonrpc to v2.0.4 ([8476c080](https://github.com/pdf/kodi-callback-daemon/commit/8476c0802efad33e9f2be0e1580774b0eb33cb5d))
+
+
 <a name="v1.0.3"></a>
 # v1.0.3 (2015-07-05)
 
