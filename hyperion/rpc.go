@@ -61,7 +61,7 @@ func Connect(address string) {
 
 // Close Hyperion connection
 func Close() {
-	conn.Close()
+	_ = conn.Close()
 }
 
 // coerce takes a key/value pair and recurses down the value, replacing any
@@ -138,7 +138,9 @@ func Execute(callback map[string]interface{}) {
 	if _, ok := err.(net.Error); ok {
 		log.WithField(`error`, err).Error(`Writing to Hyperion`)
 		Connect(connAddress)
-		encoder.Encode(&cb)
+		if err := encoder.Encode(&cb); err != nil {
+			log.WithField(`error`, err).Error(`Failed writing to Hyperion`)
+		}
 	} else if err != nil {
 		log.WithField(`error`, err).Error(`Writing to Hyperion`)
 	}
