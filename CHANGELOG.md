@@ -1,11 +1,16 @@
 
-<a name="undefined"></a>
-# undefined (2015-07-05)
+<a name="v1.0.3"></a>
+# v1.0.3 (2015-07-05)
 
 ## :house: Housekeeping
 
 - **build**:
   - Migrate from godeps to goop, update goxc config ([f8bc5a3a](https://github.com/pdf/kodi-callback-daemon/commit/f8bc5a3a8fbb99d81b8e777af22d353c51df36b6))
+
+## :arrow_up: Dependency Updates
+
+- **core**:
+  - Update kodi lib to v2.0.3 ([0db4f84b](https://github.com/pdf/kodi-callback-daemon/commit/0db4f84b484b963f3b605591f6400965abdc7b2b))
 
 
 <a name="v1.0.2"></a>
