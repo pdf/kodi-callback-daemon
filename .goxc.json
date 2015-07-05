@@ -4,9 +4,7 @@
 	"Tasks": [
 		"interpolate-source",
 		"default",
-		"pkg-source",
-		"publish-github",
-		"tag"
+		"publish-github"
 	],
 	"BuildConstraints": "!plan9,!netbsd,!openbsd,!dragonfly,!solaris,!nacl",
 	"MainDirsExclude": ".vendor",
