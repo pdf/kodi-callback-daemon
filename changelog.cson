@@ -34,4 +34,11 @@ sections: [
     grouping_capture: 1
     include_body: true
   }
+  {
+    name: ':arrow_up: Dependency Updates'
+    match: '^(?:deps|:dependencies|:arrow_up:)\\((.*)\\):\\s(.*)$'
+    replace: '\\2'
+    grouping_capture: 1
+    include_body: true
+  }
 ]

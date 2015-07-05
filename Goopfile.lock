@@ -1,0 +1,8 @@
+github.com/Sirupsen/logrus #v0.8.2
+github.com/StreamBoat/kodi_jsonrpc #v2.0.1
+github.com/bugsnag/bugsnag-go #13fd6b8acda029830ef9904df6b63be0a83369d0
+github.com/bugsnag/osext #0dd3f918b21bec95ace9dc86c7e70266cfc5c702
+github.com/bugsnag/panicwrap #e5f9854865b9778a45169fc249e99e338d4d6f27
+github.com/getsentry/raven-go #b4cfeb65c7ac54358cf22498a85588836c50e159
+github.com/mitchellh/mapstructure #2caf8efc93669b6c43e0441cdc6aed17546c96f3
+github.com/tobi/airbrake-go #5b5e269e1bc398d43f67e43dafff3414a59cd5a2

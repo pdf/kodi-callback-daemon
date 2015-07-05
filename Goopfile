@@ -1,0 +1,3 @@
+github.com/Sirupsen/logrus #v0.8.2
+github.com/StreamBoat/kodi_jsonrpc #v2.0.1
+github.com/mitchellh/mapstructure #2caf8efc93669b6c43e0441cdc6aed17546c96f3
