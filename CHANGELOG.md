@@ -1,4 +1,13 @@
 
+<a name="undefined"></a>
+# undefined (2015-07-05)
+
+## :house: Housekeeping
+
+- **build**:
+  - Migrate from godeps to goop, update goxc config ([f8bc5a3a](https://github.com/pdf/kodi-callback-daemon/commit/f8bc5a3a8fbb99d81b8e777af22d353c51df36b6))
+
+
 <a name="v1.0.2"></a>
 # v1.0.2 (2015-03-17)
 
