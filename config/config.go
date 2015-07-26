@@ -71,6 +71,3 @@ func Load(filename string) Config {
 
 	return conf
 }
-
-func unmarshalTimeout() {
-}
