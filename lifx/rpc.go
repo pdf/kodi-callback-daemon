@@ -24,18 +24,43 @@ var (
 	client *golifx.Client
 )
 
-// Connect establishes a LIFX client and performs device discovery
-func Connect(timeout *config.Timeout) {
+func initClient() error {
 	var err error
 
-	golifx.SetLogger(log.New())
 	client, err = golifx.NewClient(&protocol.V2{})
-	if timeout != nil && *timeout > 0 {
-		client.SetTimeout(time.Duration(*timeout))
-	}
-	for err != nil {
+	if err != nil {
 		log.WithField(`error`, err).Error(`Creating LIFX client`)
-		log.Info(`Attempting rediscovery...`)
+		return err
+	}
+
+	return nil
+}
+
+// Connect establishes a LIFX client and performs device discovery
+func Connect(cfg config.Config) {
+	logger := log.New()
+
+	if cfg.Debug != nil && *cfg.Debug {
+		logger.Level = log.DebugLevel
+	}
+	golifx.SetLogger(logger)
+
+	if err := initClient(); err != nil {
+		tick := time.Tick(2 * time.Second)
+		done := make(chan bool)
+		select {
+		case <-done:
+		case <-tick:
+			err = initClient()
+			if err == nil {
+				done <- true
+			}
+		}
+	}
+
+	client.SetDiscoveryInterval(30 * time.Second)
+	if cfg.LIFX.Timeout != nil && *cfg.LIFX.Timeout > 0 {
+		client.SetTimeout(time.Duration(*cfg.LIFX.Timeout))
 	}
 	log.Info(`Initiated LIFX client`)
 }

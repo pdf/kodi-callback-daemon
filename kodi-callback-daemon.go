@@ -146,7 +146,7 @@ func main() {
 
 	// If the configuration specifies a LIFX connection, use it.
 	if cfg.LIFX != nil {
-		lifx.Connect(cfg.LIFX.Timeout)
+		lifx.Connect(cfg)
 		defer lifx.Close()
 	}
 
