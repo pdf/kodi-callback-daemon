@@ -3,12 +3,36 @@
     "address": "127.0.0.1",
     "port": 9090
   },
+
   "hyperion": {
     "address": "127.0.0.1",
     "port": 19444
   },
+
+  "lifx": {},
+
+  "debug": true,
+
   "callbacks": {
     "Startup": [
+      {
+        "backend": "lifx",
+        "power": true,
+        "powerDuration": "5s",
+        "color": {
+          "hue": 0,
+          "saturation": 0,
+          "brightness": 50000,
+          "kelvin": 2750
+        },
+        "colorDuration": "5s",
+        "lights": [
+          "Cinema0",
+          "Cinema1",
+          "Cinema2",
+          "Cinema3"
+        ]
+      },
       {
         "backend": "hyperion",
         "command": "transform",
@@ -37,13 +61,32 @@
         }
       }
     ],
+
     "Player.OnPlay": [
+      {
+        "backend": "lifx",
+        "power": false,
+        "powerDuration": "1s",
+        "color": {
+          "hue": 0,
+          "brightness": 0,
+          "saturation": 65535,
+          "kelvin": 2750
+        },
+        "colorDuration": "1s",
+        "lights": [
+          "Cinema0",
+          "Cinema1",
+          "Cinema2",
+          "Cinema3"
+        ]
+      },
       {
         "types": ["movie", "episode"],
         "backend": "hyperion",
         "command": "transform",
         "transform": {
-          "gamma": [2.2, 2.2, 2.8],
+          "gamma": [1.8, 1.8, 2.1],
           "valueGain": 1.0,
           "saturationGain": 1.0
         }
@@ -64,7 +107,26 @@
         "priority": 86
       }
     ],
+
     "Player.OnPause": [
+      {
+        "backend": "lifx",
+        "power": true,
+        "powerDuration": "3s",
+        "color": {
+          "hue": 0,
+          "saturation": 0,
+          "brightness": 20000,
+          "kelvin": 2750
+        },
+        "colorDuration": "3s",
+        "lights": [
+          "Cinema0",
+          "Cinema1",
+          "Cinema2",
+          "Cinema3"
+        ]
+      },
       {
         "backend": "hyperion",
         "command": "transform",
@@ -83,7 +145,26 @@
         }
       }
     ],
+
     "Player.OnStop": [
+      {
+        "backend": "lifx",
+        "power": true,
+        "powerDuration": "5s",
+        "color": {
+          "hue": 0,
+          "saturation": 0,
+          "brightness": 50000,
+          "kelvin": 2750
+        },
+        "colorDuration": "5s",
+        "lights": [
+          "Cinema0",
+          "Cinema1",
+          "Cinema2",
+          "Cinema3"
+        ]
+      },
       {
         "backend": "hyperion",
         "command": "transform",
@@ -102,7 +183,19 @@
         }
       }
     ],
+
     "GUI.OnScreensaverActivated": [
+      {
+        "backend": "lifx",
+        "power": false,
+        "powerDuration": "5s",
+        "lights": [
+          "Cinema0",
+          "Cinema1",
+          "Cinema2",
+          "Cinema3"
+        ]
+      },
       {
         "backend": "hyperion",
         "command": "color",
@@ -110,14 +203,45 @@
         "color": [0,0,0]
       }
     ],
+
     "GUI.OnScreensaverDeactivated": [
+      {
+        "backend": "lifx",
+        "power": true,
+        "powerDuration": "5s",
+        "color": {
+          "hue": 0,
+          "saturation": 0,
+          "brightness": 50000,
+          "kelvin": 2750
+        },
+        "colorDuration": "5s",
+        "lights": [
+          "Cinema0",
+          "Cinema1",
+          "Cinema2",
+          "Cinema3"
+        ]
+      },
       {
         "backend": "hyperion",
         "command": "clear",
         "priority": 68
       }
     ],
+
     "System.OnQuit": [
+      {
+        "backend": "lifx",
+        "power": false,
+        "powerDuration": "5s",
+        "lights": [
+          "Cinema0",
+          "Cinema1",
+          "Cinema2",
+          "Cinema3"
+        ]
+      },
       {
         "backend": "hyperion",
         "command": "color",
@@ -125,7 +249,19 @@
         "color": [0,0,0]
       }
     ],
+
     "System.OnRestart": [
+      {
+        "backend": "lifx",
+        "power": false,
+        "powerDuration": "5s",
+        "lights": [
+          "Cinema0",
+          "Cinema1",
+          "Cinema2",
+          "Cinema3"
+        ]
+      },
       {
         "backend": "hyperion",
         "command": "color",

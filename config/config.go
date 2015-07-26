@@ -2,17 +2,47 @@ package config
 
 import (
 	"encoding/json"
+	"errors"
 	"os"
 	"time"
 
 	log "github.com/Sirupsen/logrus"
 )
 
+// Timeout is a duration type that unmarshals from a JSON string
+type Timeout time.Duration
+
+// UnmarshalJSON converts a time string into a time.Duration
+func (t *Timeout) UnmarshalJSON(b []byte) error {
+	var (
+		timeout time.Duration
+		str     string
+		err     error
+	)
+
+	if err = json.Unmarshal(b, &str); err != nil {
+		return errors.New(`Error interpreting timeout as string`)
+	}
+
+	if timeout, err = time.ParseDuration(str); err != nil {
+		return errors.New(`Error interpreting timeout as duration`)
+	}
+	converted := Timeout(timeout)
+	t = &converted
+
+	return nil
+}
+
 // Host contains the IP address, port and timeout for TCP/UDP connections.
 type Host struct {
-	Address string         `json:"address"` // Required
-	Port    uint16         `json:"port"`    // Required
-	Timeout *time.Duration `json:"timeout"` // Optional
+	Address string   `json:"address"` // Required
+	Port    uint16   `json:"port"`    // Required
+	Timeout *Timeout `json:"timeout"` // Optional
+}
+
+// LIFX stores the LIFX json configuration structure.
+type LIFX struct {
+	Timeout *Timeout `json:"timeout"` // Optional
 }
 
 // Config stores the json configuration structure.
@@ -20,6 +50,7 @@ type Config struct {
 	XBMC      *Host       `json:"xbmc"`      // Deprecated
 	Kodi      *Host       `json:"kodi"`      // Required (if XBMC not provided)
 	Hyperion  *Host       `json:"hyperion"`  // Optional
+	LIFX      *LIFX       `json:"lifx"`      // Optional
 	Debug     *bool       `json:"debug"`     // Optional
 	Callbacks interface{} `json:"callbacks"` // Required
 }
@@ -39,4 +70,7 @@ func Load(filename string) Config {
 	}
 
 	return conf
+}
+
+func unmarshalTimeout() {
 }

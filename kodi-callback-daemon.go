@@ -9,12 +9,14 @@ import (
 	"github.com/pdf/kodi-callback-daemon/config"
 	"github.com/pdf/kodi-callback-daemon/hyperion"
 	"github.com/pdf/kodi-callback-daemon/kodi"
+	"github.com/pdf/kodi-callback-daemon/lifx"
 	"github.com/pdf/kodi-callback-daemon/shell"
 
 	log "github.com/Sirupsen/logrus"
 )
 
 const (
+	// VERSION of the application
 	VERSION = "1.0.4"
 )
 
@@ -56,6 +58,11 @@ func execute(callbacks []interface{}) {
 				hyperion.Execute(m)
 			}
 
+		case `lifx`:
+			if cfg.LIFX != nil {
+				lifx.Execute(m)
+			}
+
 		case `kodi`, `xbmc`:
 			kodi.Execute(&k, m)
 
@@ -73,7 +80,7 @@ func execute(callbacks []interface{}) {
 // callback is added to the returned list.  A callback without a `types`
 // property will always be returned.
 func callbacksByType(matchType string, callbacks []interface{}) []interface{} {
-	result := make([]interface{}, 0)
+	var result []interface{}
 	var cb map[string]interface{}
 
 	for i := range callbacks {
@@ -107,15 +114,15 @@ func callbacksByType(matchType string, callbacks []interface{}) []interface{} {
 func main() {
 	var host config.Host
 	// Connect to Kodi, this is required.
-	kodi_timeout := time.Duration(0)
+	kodiTimeout := time.Duration(0)
 	if cfg.Kodi != nil {
 		if cfg.Kodi.Timeout != nil {
-			kodi_timeout = *cfg.Kodi.Timeout
+			kodiTimeout = time.Duration(*cfg.Kodi.Timeout)
 		}
 		host = *cfg.Kodi
 	} else if cfg.XBMC != nil {
 		if cfg.XBMC.Timeout != nil {
-			kodi_timeout = *cfg.XBMC.Timeout
+			kodiTimeout = time.Duration(*cfg.XBMC.Timeout)
 		}
 		host = *cfg.XBMC
 	} else {
@@ -123,7 +130,7 @@ func main() {
 	}
 	k, err := kodi_jsonrpc.New(
 		fmt.Sprintf(`%s:%d`, host.Address, host.Port),
-		kodi_timeout,
+		kodiTimeout,
 	)
 
 	defer k.Close()
@@ -135,6 +142,12 @@ func main() {
 	if cfg.Hyperion != nil {
 		hyperion.Connect(fmt.Sprintf(`%s:%d`, cfg.Hyperion.Address, cfg.Hyperion.Port))
 		defer hyperion.Close()
+	}
+
+	// If the configuration specifies a LIFX connection, use it.
+	if cfg.LIFX != nil {
+		lifx.Connect(cfg.LIFX.Timeout)
+		defer lifx.Close()
 	}
 
 	// Get callbacks from configuration.
