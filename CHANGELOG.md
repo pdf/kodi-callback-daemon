@@ -1,4 +1,13 @@
 
+<a name="v1.1.1"></a>
+# v1.1.1 (2015-07-26)
+
+## :bug: Bug Fixes
+
+- **lifx**:
+  - Enable LIFX discovery polling and honor debug flag for logs ([0b10454b](https://github.com/pdf/kodi-callback-daemon/commit/0b10454b131d7378185716fb32d8f6b29a9e2ba9))
+
+
 <a name="v1.1.0"></a>
 # v1.1.0 (2015-07-26)
 
