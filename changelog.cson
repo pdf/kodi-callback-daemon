@@ -1,42 +1,42 @@
 sections: [
   {
     name: ':sparkles: Features'
-    match: '^(?:feat|:sparkles:)\\((.*)\\):\\s(.*)$'
+    match: '^(?:feat|:sparkles:)\\((.*)\\)(?::)?\\s(.*)$'
     replace: '\\2'
     grouping_capture: 1
     include_body: true
   }
   {
     name: ':bug: Bug Fixes'
-    match: '^(?:fix|:bug:)\\((.*)\\):\\s(.*)$'
+    match: '^(?:fix|:bug:)\\((.*)\\)(?::)?\\s(.*)$'
     replace: '\\2'
     grouping_capture: 1
     include_body: true
   }
   {
     name: ':speedboat: Performance Improvements'
-    match: '^(?:perf|:speedboat:)\\((.*)\\):\\s(.*)$'
+    match: '^(?:perf|:speedboat:)\\((.*)\\)(?::)?\\s(.*)$'
     replace: '\\2'
     grouping_capture: 1
     include_body: true
   }
   {
     name: ':house: Housekeeping'
-    match: '^(?:chore|:house:)\\((.*)\\):\\s(.*)$'
+    match: '^(?:chore|:house:)\\((.*)\\)(?::)?\\s(.*)$'
     replace: '\\2'
     grouping_capture: 1
     include_body: true
   }
   {
     name: ':lock: Security Note'
-    match: '^(?:security|:lock:)\\((.*)\\):\\s(.*)$'
+    match: '^(?:security|:lock:)\\((.*)\\)(?::)?\\s(.*)$'
     replace: '\\2'
     grouping_capture: 1
     include_body: true
   }
   {
     name: ':arrow_up: Dependency Updates'
-    match: '^(?:deps|:dependencies|:arrow_up:)\\((.*)\\):\\s(.*)$'
+    match: '^(?:deps|:dependencies|:arrow_up:)\\((.*)\\)(?::)?\\s(.*)$'
     replace: '\\2'
     grouping_capture: 1
     include_body: true

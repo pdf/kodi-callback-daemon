@@ -1,4 +1,15 @@
 
+<a name="v1.1.0"></a>
+# v1.1.0 (2015-07-26)
+
+## :sparkles: Features
+
+- **packaging**:
+  - Add systemd unit ([4ef46666](https://github.com/pdf/kodi-callback-daemon/commit/4ef466663e10447a2ffcfd9897e725c93262b25a))
+- **backends**:
+  - Add LIFX backend ([a7514a06](https://github.com/pdf/kodi-callback-daemon/commit/a7514a06ab6bc0fb21e6a1c7d87c10331060f70c))
+
+
 <a name="v1.0.4"></a>
 # v1.0.4 (2015-07-05)
 
