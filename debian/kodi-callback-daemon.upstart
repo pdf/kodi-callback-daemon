@@ -14,7 +14,7 @@ env OLDCONFIGFILE=/etc/xbmc-callback-daemon.json
 
 script
 	if [ -f "$DEFAULTFILE" ]; then
-	    . "$DEFAULTFILE"
+		. "$DEFAULTFILE"
 	fi
 	# TODO: Remove this deprecated config handling at some stage in the future
 	if [ -f "${OLDCONFIGFILE}" -a "${CONFIGFILE}" = "/etc/kodi-callback-daemon.json" ]; then

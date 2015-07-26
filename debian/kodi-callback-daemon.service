@@ -1,0 +1,14 @@
+[Unit]
+Description=Kodi callback daemon
+
+[Service]
+Type=simple
+Environment=CONFIGFILE=/etc/kodi-callback-daemon.json
+EnvironmentFile=/etc/default/kodi-callback-daemon
+ExecStart=/usr/bin/kodi-callback-daemon $CONFIGFILE
+Restart=on-failure
+RestartSec=10
+LimitNOFILE=infinity
+
+[Install]
+WantedBy=multi-user.target

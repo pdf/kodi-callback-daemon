@@ -54,19 +54,19 @@ fi
 case $1 in
 	start)
 		log_daemon_msg "Starting $DAEMON_NAME"
-  		start-stop-daemon --start --background --quiet --make-pidfile --pidfile $PIDFILE --startas $DAEMON -- $CONFIGFILE
+		start-stop-daemon --start --background --quiet --make-pidfile --pidfile $PIDFILE --startas $DAEMON -- $CONFIGFILE
 		status=$?
 		log_end_msg $status
-  		;;
+		;;
 	stop)
 		log_daemon_msg "Stopping $DAEMON_NAME"
-  		start-stop-daemon --stop --quiet --pidfile $PIDFILE
+		start-stop-daemon --stop --quiet --pidfile $PIDFILE
 		log_end_msg $?
 		[ -f $PIDFILE ] && rm -f $PIDFILE
-  		;;
+		;;
 	restart|force-reload)
 		$0 stop && sleep 2 && $0 start
-  		;;
+		;;
 	try-restart)
 		if $0 status >/dev/null; then
 			$0 restart

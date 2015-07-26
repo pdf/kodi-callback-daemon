@@ -1,1 +1,2 @@
+#GOMAXPROCS=2
 CONFIGFILE=/etc/kodi-callback-daemon.json

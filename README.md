@@ -54,13 +54,16 @@ C:\Path\To\kodi-callback-daemon.exe C:\Path\To\configFile.json
 ```
 
 ### Debian/Ubuntu/derivs
-The deb packages include SysV and Upstart init scripts - enable and use them in the standard fashion.  You will need to add your configuration file at:
+The deb packages include SysV and Upstart init scripts and a systemd unit - enable and use them in the standard fashion.  You will need to add your configuration file at:
 
 ```
 /etc/kodi-callback-daemon.json
 ```
 
 Alternatively, you may edit `/etc/default/kodi-callback-daemon` and set the path to your configuration file there.
+
+### Other Linux distributions
+You can find the SysV init script at [kodi-callback-daemon.init](https://github.com/pdf/kodi-callback-daemon/blob/master/debian/kodi-callback-daemon.init), and the systemd unit at [kodi-callback-daemon.service](https://github.com/pdf/kodi-callback-daemon/blob/master/debian/kodi-callback-daemon.service).  Place the SysV script in `/etc/init.d/`, or the systemd unit at `/etc/systemd/system/`, and enable/start the service as you normally would.
 
 ### Kodi autoexec.py
 You might alternatively start the daemon from Kodi's `autostart.py`.  Simply edit `userdata/autoexec.py` in your Kodi directory (ie `~/.kodi/userdata/autoexec.py` on \*nix systems), and add the following:
