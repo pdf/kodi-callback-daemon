@@ -1,4 +1,4 @@
 github.com/Sirupsen/logrus #v0.8.3
 github.com/StreamBoat/kodi_jsonrpc #v2.0.4
 github.com/mitchellh/mapstructure #281073eb9eb092240d33ef253c404f1cca550309
-github.com/pdf/golifx #v0.0.4
+github.com/pdf/golifx #v0.0.5

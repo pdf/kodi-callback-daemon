@@ -8,7 +8,7 @@ github.com/golang/mock #d581abfc04272f381d7a05e4b80163ea4e2b9447
 github.com/inconshreveable/mousetrap #76626ae9c91c4f2a10f34cad8ce83ea42c93bb75
 github.com/lunixbochs/struc #9c083688fecbcd6c8dea3b2edfddd49f4a7a45ff
 github.com/mitchellh/mapstructure #281073eb9eb092240d33ef253c404f1cca550309
-github.com/pdf/golifx #v0.0.4
+github.com/pdf/golifx #v0.0.5
 github.com/spf13/cobra #385fc87e4343efec233811d3d933509e8975d11a
 github.com/spf13/pflag #67cbc198fd11dab704b214c1e629a97af392c085
 github.com/tobi/airbrake-go #5b5e269e1bc398d43f67e43dafff3414a59cd5a2
