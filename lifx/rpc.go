@@ -27,7 +27,7 @@ var (
 func initClient() error {
 	var err error
 
-	client, err = golifx.NewClient(&protocol.V2{})
+	client, err = golifx.NewClient(&protocol.V2{Reliable: true})
 	if err != nil {
 		log.WithField(`error`, err).Error(`Creating LIFX client`)
 		return err

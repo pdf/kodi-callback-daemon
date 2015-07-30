@@ -4,11 +4,13 @@ github.com/bugsnag/bugsnag-go #13fd6b8acda029830ef9904df6b63be0a83369d0
 github.com/bugsnag/osext #0dd3f918b21bec95ace9dc86c7e70266cfc5c702
 github.com/bugsnag/panicwrap #e5f9854865b9778a45169fc249e99e338d4d6f27
 github.com/getsentry/raven-go #74c334d7b8aaa4fd1b4fc6aa428c36fed1699e28
-github.com/golang/mock #d581abfc04272f381d7a05e4b80163ea4e2b9447
 github.com/inconshreveable/mousetrap #76626ae9c91c4f2a10f34cad8ce83ea42c93bb75
 github.com/lunixbochs/struc #9c083688fecbcd6c8dea3b2edfddd49f4a7a45ff
 github.com/mitchellh/mapstructure #281073eb9eb092240d33ef253c404f1cca550309
-github.com/pdf/golifx #v0.0.5
+github.com/pdf/golifx #v0.1.1
+github.com/satori/go.uuid #6b8e5b55d20d01ad47ecfe98e5171688397c61e9
 github.com/spf13/cobra #385fc87e4343efec233811d3d933509e8975d11a
 github.com/spf13/pflag #67cbc198fd11dab704b214c1e629a97af392c085
+github.com/stretchr/objx #cbeaeb16a013161a98496fad62933b1d21786672
+github.com/stretchr/testify #089c7181b8c728499929ff09b62d3fdd8df8adff
 github.com/tobi/airbrake-go #5b5e269e1bc398d43f67e43dafff3414a59cd5a2
