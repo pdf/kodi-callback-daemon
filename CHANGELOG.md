@@ -1,4 +1,13 @@
 
+<a name="v1.1.3"></a>
+# v1.1.3 (2015-07-30)
+
+## :arrow_up: Dependency Updates
+
+- **core**:
+  - Bump golifx to v0.1.1 and enable reliable mode ([9edfc521](https://github.com/pdf/kodi-callback-daemon/commit/9edfc5217c2aab9823b5211547f88600c099d51d))
+
+
 <a name="v1.1.2"></a>
 # v1.1.2 (2015-07-27)
 
