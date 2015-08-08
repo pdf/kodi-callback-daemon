@@ -8,13 +8,14 @@
 	],
 	"BuildConstraints": "!plan9,!netbsd,!openbsd,!dragonfly,!solaris,!nacl",
 	"MainDirsExclude": ".vendor",
-	"PackageVersion": "1.1.4",
+	"PackageVersion": "1.1.5",
 	"TaskSettings": {
 		"deb": {
 			"other-mapped-files": {
 				"/etc/default/kodi-callback-daemon": "debian/kodi-callback-daemon.default",
 				"/etc/init.d/kodi-callback-daemon": "debian/kodi-callback-daemon.init",
 				"/etc/init/kodi-callback-daemon.conf": "debian/kodi-callback-daemon.upstart",
+				"/lib/systemd/system/kodi-callback-daemon.service": "debian/kodi-callback-daemon.service",
 				"/usr/share/doc/kodi-callback-daemon/kodi-callback-daemon.example.json": "contrib/config.example.json"
 			}
 		},
