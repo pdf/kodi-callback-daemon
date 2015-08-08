@@ -1,4 +1,13 @@
 
+<a name="undefined"></a>
+# undefined (2015-08-08)
+
+## :bug: Bug Fixes
+
+- **packaging**:
+  - Add systemd unit to package via goxc ([6e6d8ba0](https://github.com/pdf/kodi-callback-daemon/commit/6e6d8ba0421ed12220dc4103838c77d8c6513e68))
+
+
 <a name="v1.1.4"></a>
 # v1.1.4 (2015-08-01)
 
@@ -35,8 +44,8 @@
   - Enable LIFX discovery polling and honor debug flag for logs ([0b10454b](https://github.com/pdf/kodi-callback-daemon/commit/0b10454b131d7378185716fb32d8f6b29a9e2ba9))
 
 
-<a name="v1.1.0"></a>
-# v1.1.0 (2015-07-26)
+<a name="v1.0.5"></a>
+# v1.0.5 (2015-08-08)
 
 ## :sparkles: Features
 
@@ -44,6 +53,20 @@
   - Add systemd unit ([4ef46666](https://github.com/pdf/kodi-callback-daemon/commit/4ef466663e10447a2ffcfd9897e725c93262b25a))
 - **backends**:
   - Add LIFX backend ([a7514a06](https://github.com/pdf/kodi-callback-daemon/commit/a7514a06ab6bc0fb21e6a1c7d87c10331060f70c))
+
+## :bug: Bug Fixes
+
+- **packaging**:
+  - Add systemd unit to package via goxc ([6e6d8ba0](https://github.com/pdf/kodi-callback-daemon/commit/6e6d8ba0421ed12220dc4103838c77d8c6513e68))
+- **lifx**:
+  - Enable LIFX discovery polling and honor debug flag for logs ([0b10454b](https://github.com/pdf/kodi-callback-daemon/commit/0b10454b131d7378185716fb32d8f6b29a9e2ba9))
+
+## :arrow_up: Dependency Updates
+
+- **core**:
+  - Bump golifx to v0.1.2 ([ac009963](https://github.com/pdf/kodi-callback-daemon/commit/ac009963bcee5010fa70bed097c1cefc5907106b))
+  - Bump golifx to v0.1.1 and enable reliable mode ([9edfc521](https://github.com/pdf/kodi-callback-daemon/commit/9edfc5217c2aab9823b5211547f88600c099d51d))
+  - Update golifx to v0.0.5 ([eb255e6c](https://github.com/pdf/kodi-callback-daemon/commit/eb255e6cf372a4d946054a2ee1527da49d6d737d))
 
 
 <a name="v1.0.4"></a>
