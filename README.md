@@ -96,11 +96,11 @@ If you have questions on how to use the daemon, you may post them in the [Kodi f
 ## Configuration
 The configuration file is written in JSON (I know, JSON is awful for configuration, but since we're passing JSON messages everywhere, it makes the most sense here), and has the following top-level members:
 
-- `kodi` connection object (required)
-- `hyperion` connection object (optional, but required if you're using the Hyperion backend)
-- `lifx` connection object (optional, but required if you're using the LIFX backend)
-- `debug` boolean enables debug logging (optional)
-- `callbacks` object (required, or nothing will be done!).
+- `kodi` __object__ defines the Kodi connection parameters (_required_)
+- `hyperion` __object__ defines the hyperion connection parameters (_optional_, but _required_ if you're using the Hyperion backend)
+- `lifx` __object__ defines the lifx connection parameters (_optional_, but _required_ if you're using the LIFX backend)
+- `debug` __boolean__ enables debug logging (_optional_)
+- `callbacks` __object__ (_required_, or nothing will be done!).
 
 See the [config.example.json](https://github.com/pdf/kodi-callback-daemon/tree/master/contrib/config.example.json) for my Hyperion/LIFX setup, which uses most of the available features.
 
