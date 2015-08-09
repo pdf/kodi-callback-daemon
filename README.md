@@ -490,3 +490,9 @@ The `Player.OnPlay` notification has one additional, optional property available
   }
 }
 ```
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for build/contribution details.
+
+We use [goop](https://github.com/nitrous-io/goop) for dependency management, and [goxc](https://github.com/laher/goxc) to produce release builds.
