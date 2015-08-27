@@ -445,8 +445,8 @@ Full example, mixing `hyperion` and `shell` callbacks:
 }
 ```
 
-#### Player.OnPlay
-The `Player.OnPlay` notification has one additional, optional property available to callbacks: `types`. This property may contain an array of item types sent with Kodi notifications with this method. At the time of writing, these types are `["movie", "episode", "song"]`.  Callbacks with a `types` property will only execute if the played media type matches one of the listed types in the callback.  Callbacks with no `types` property are always executed on `Player.OnPlay` notifications.  The following example increases Hyperion saturation/value, and decreases gamma compensation for music so that visualizations produce punchy lighting effects, and conversely sets much more sedate values for video types.  It also executes a `clear` command on channel 86 when any media is played (`types` is omitted).
+#### Player.OnPlay, Player.OnPause, Player.OnStop
+The `Player.OnPlay`, `Player.OnPause` and `Player.OnStop` notifications have one additional, optional property available to callbacks: `types`. This property may contain an array of item types sent with Kodi notifications for this method. At the time of writing, these types are `["movie", "episode", "song"]`.  Callbacks with a `types` property will only execute if the played media type matches one of the listed types in the callback.  Callbacks with no `types` property are always executed on receiving these notifications.  The following example increases Hyperion saturation/value, and decreases gamma compensation for music so that visualizations produce punchy lighting effects, and conversely sets much more sedate values for video types.  It also executes a `clear` command on channel 86 when any media is played (`types` is omitted).
 
 ```json
 {

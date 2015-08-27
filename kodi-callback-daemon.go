@@ -166,8 +166,8 @@ func main() {
 		// Match Kodi notification to our configured callbacks.
 		if callbacks[notification.Method] != nil {
 			cbs := callbacks[notification.Method].([]interface{})
-			// The Player.OnPlay notification supports an filtering by item type.
-			if notification.Method == `Player.OnPlay` {
+			switch notification.Method {
+			case `Player.OnPlay`, `Player.OnPause`, `Player.OnStop`:
 				cbs = callbacksByType(notification.Params.Data.Item.Type, cbs)
 			}
 			execute(cbs)
