@@ -1,4 +1,13 @@
 
+<a name="v1.2.0"></a>
+# v1.2.0 (2015-08-27)
+
+## :sparkles: Features
+
+- **core**:
+  - Add media types to `Player.OnPause` and `Player.OnStop` ([0c290a54](https://github.com/pdf/kodi-callback-daemon/commit/0c290a5455261933b21e12c01146cba9d66b8df9), [#2](https://github.com/pdf/kodi-callback-daemon/issues/2))
+
+
 <a name="v1.1.5"></a>
 # v1.1.5 (2015-08-08)
 

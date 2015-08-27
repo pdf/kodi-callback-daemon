@@ -1,4 +1,47 @@
-kodi-callback-daemon (1.0.5) unstable; urgency=medium
+kodi-callback-daemon (1.2.0) unstable; urgency=medium
+
+  * :house:(build): Migrate from godeps to goop, update goxc config
+  * Bump version to v1.0.3
+  * Disable building nacl binaries, change output dir
+  * Ignore local goxc config
+  * Update Changelog
+  * :arrow_up:(core): Update kodi lib to v2.0.3
+  * Update Changelog
+  * :arrow_up:(core): Update kodi_jsonrpc to v2.0.4
+  * Bump version to v1.0.4
+  * Update changelog
+  * Rely on Github release for tags
+  * Fix for errcheck
+  * :sparkles:(backends): Add LIFX backend
+  * :sparkles:(packaging) Add systemd unit
+  * Bump to v1.1.0
+  * Update changelog
+  * Remove superfluous function
+  * :bug:(lifx) Enable LIFX discovery polling and honor debug flag for logs
+  * Bump to v1.1.1
+  * Update changelog
+  * :arrow_up:(core) Update golifx to v0.0.5
+  * Bump to v1.1.2
+  * Update changelog
+  * :arrow_up:(core) Bump golifx to v0.1.1 and enable reliable mode
+  * Bump to v1.1.3
+  * Update changelog
+  * :arrow_up:(core) Bump golifx to v0.1.2
+  * Bump to v1.1.4
+  * Update changelog
+  * :bug:(packaging) Add systemd unit to package via goxc
+  * Update debian changelog, forgot to do this for a while
+  * Update changelog
+  * Fix changelog
+  * README tweaks
+  * Add CONTRIBUTING.md
+  * Note CONTRIBUTING in README
+  * :sparkles:(core) Add media types to `Player.OnPause` and `Player.OnStop`
+  * Bump to v1.2.0
+
+ -- Peter Fern <github@obfusc8.org>  Thu, 27 Aug 2015 10:55:05 +1000
+
+kodi-callback-daemon (1.0.2) unstable; urgency=medium
 
   * Update docs
   * :house:(libs): Update kodi_jsonrpc to v2.0.0
