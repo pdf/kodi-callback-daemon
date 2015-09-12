@@ -18,6 +18,9 @@ import (
 const (
 	// VERSION of the application
 	VERSION = "1.2.0"
+	// LIFXDELAY delays startup execution to allow LIFX devices to report their
+	// group membership
+	LIFXDELAY = 3 * time.Second
 )
 
 var (
@@ -155,6 +158,11 @@ func main() {
 
 	// Execute callbacks for the special `Startup` notification.
 	if callbacks[`Startup`] != nil {
+		// LIFX groups take some time to populate, so we add an arbitrary delay
+		// here to try and compensate
+		if cfg.LIFX != nil {
+			time.Sleep(LIFXDELAY)
+		}
 		execute(callbacks[`Startup`].([]interface{}))
 	}
 

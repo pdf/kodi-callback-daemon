@@ -18,6 +18,7 @@ type lifxCallback struct {
 	Color         common.Color
 	ColorDuration time.Duration
 	Lights        []string
+	Groups        []string
 }
 
 var (
@@ -98,11 +99,12 @@ func Execute(callback map[string]interface{}) {
 	}
 
 	if _, ok := callback[`power`]; ok {
-		if len(cb.Lights) == 0 {
+		if len(cb.Lights) == 0 && len(cb.Groups) == 0 {
 			if err = client.SetPowerDuration(cb.Power, cb.PowerDuration); err != nil {
 				log.WithField(`error`, err).Error(`Setting power`)
 			}
-		} else {
+		}
+		if len(cb.Lights) > 0 {
 			for _, label := range cb.Lights {
 				light, err := client.GetLightByLabel(label)
 				if err != nil {
@@ -121,14 +123,34 @@ func Execute(callback map[string]interface{}) {
 				}
 			}
 		}
+		if len(cb.Groups) > 0 {
+			for _, label := range cb.Groups {
+				group, err := client.GetGroupByLabel(label)
+				if err != nil {
+					log.WithFields(log.Fields{
+						`label`: label,
+						`error`: err,
+					}).Error(`Finding group`)
+					continue
+				}
+				if err = group.SetPowerDuration(cb.Power, cb.PowerDuration); err != nil {
+					log.WithFields(log.Fields{
+						`label`: label,
+						`error`: err,
+					}).Error(`Setting power`)
+					continue
+				}
+			}
+		}
 	}
 
 	if _, ok := callback[`color`]; ok {
-		if len(cb.Lights) == 0 {
+		if len(cb.Lights) == 0 && len(cb.Groups) == 0 {
 			if err = client.SetColor(cb.Color, cb.ColorDuration); err != nil {
 				log.WithField(`error`, err).Error(`Setting color`)
 			}
-		} else {
+		}
+		if len(cb.Lights) > 0 {
 			for _, label := range cb.Lights {
 				light, err := client.GetLightByLabel(label)
 				if err != nil {
@@ -139,6 +161,25 @@ func Execute(callback map[string]interface{}) {
 					continue
 				}
 				if err = light.SetColor(cb.Color, cb.ColorDuration); err != nil {
+					log.WithFields(log.Fields{
+						`label`: label,
+						`error`: err,
+					}).Error(`Setting color`)
+					continue
+				}
+			}
+		}
+		if len(cb.Groups) > 0 {
+			for _, label := range cb.Groups {
+				group, err := client.GetGroupByLabel(label)
+				if err != nil {
+					log.WithFields(log.Fields{
+						`label`: label,
+						`error`: err,
+					}).Error(`Finding group`)
+					continue
+				}
+				if err = group.SetColor(cb.Color, cb.ColorDuration); err != nil {
 					log.WithFields(log.Fields{
 						`label`: label,
 						`error`: err,
