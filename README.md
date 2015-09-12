@@ -312,7 +312,8 @@ Property | Value | Example | Comment
 `powerDuration` | time string `<number><unit>` | `"powerDuration": 5s` | Defines the duration of the power transition, this will fade your lights on or off over the specified duration (example is 5 seconds).  Only valid if combined with `power`.
 `color` | color object (HSBK) | `"color": {"hue": 0, "brightness": 65535, "saturation": 65535, kelvin: 2500}` | The color object must contain all of the `hue`, `brightness`, `saturation` and `kelvin` properties to be valid.  The range of valid values is 0-65535 for `hue`, `saturation` and `brightness`, and 2500-9000 for `kelvin`.  The `kelvin` value sets the warmth of white light in degrees, and only applies when `saturation` is near zero.
 `colorDuration` | time string `<number><unit>` | `"powerDuration": 5s` | Defines the duration of the color transition, this will fade your lights between colors over the specified duration (example is 5 seconds).  Only valid if combined with `color`.
-`lights` | array of light labels | `"lights": ["Lounge", "Kitchen"]` | Defines the list of lights that the callback will apply to, by their labels.  There's no group support at this stage unfortunately, ~~because the LIFX LAN protocol does not document how to discover groups~~ but group support is coming soon now that it's included in the protocol docs.
+`lights` | array of light labels | `"lights": ["Lounge1", "Lounge2"]` | Defines the list of lights that the callback will apply to, by their labels.
+`groups` | array of group labels | `"groups": ["Cinema", "Kitchen"]` | Defines the list of groups that the callback will apply to, by their labels.
 
 ```json
 {
@@ -327,13 +328,16 @@ Property | Value | Example | Comment
   },
   "colorDuration": "5s",
   "lights": [
-    "Lounge",
-    "Kitchen"
+    "Lounge1",
+    "Lounge2"
+  ],
+  "groups": [
+    "Cinema"
   ]
 }
 ```
 
-And if we wanted to run this callback on `Player.OnPlay`, and on `Player.OnStop` notifications, our full configuration might look like this:
+And if we wanted to run a callback on `Player.OnPlay`, and on `Player.OnStop` notifications, our full configuration might look like this:
 
 ```json
 {
@@ -356,9 +360,8 @@ And if we wanted to run this callback on `Player.OnPlay`, and on `Player.OnStop`
           "kelvin": 3000
         },
         "colorDuration": "2s",
-        "lights": [
-          "Lounge",
-          "Kitchen"
+        "groups": [
+          "Cinema"
         ]
       }
     ],
@@ -374,9 +377,8 @@ And if we wanted to run this callback on `Player.OnPlay`, and on `Player.OnStop`
           "kelvin": 3000
         },
         "colorDuration": "2s",
-        "lights": [
-          "Lounge",
-          "Kitchen"
+        "groups": [
+          "Cinema"
         ]
       }
     ]
