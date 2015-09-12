@@ -26,11 +26,8 @@
           "kelvin": 2750
         },
         "colorDuration": "5s",
-        "lights": [
-          "Cinema0",
-          "Cinema1",
-          "Cinema2",
-          "Cinema3"
+        "groups": [
+          "Cinema"
         ]
       },
       {
@@ -74,11 +71,8 @@
           "kelvin": 2750
         },
         "colorDuration": "1s",
-        "lights": [
-          "Cinema0",
-          "Cinema1",
-          "Cinema2",
-          "Cinema3"
+        "groups": [
+          "Cinema"
         ]
       },
       {
@@ -120,11 +114,8 @@
           "kelvin": 2750
         },
         "colorDuration": "3s",
-        "lights": [
-          "Cinema0",
-          "Cinema1",
-          "Cinema2",
-          "Cinema3"
+        "groups": [
+          "Cinema"
         ]
       },
       {
@@ -158,11 +149,8 @@
           "kelvin": 2750
         },
         "colorDuration": "5s",
-        "lights": [
-          "Cinema0",
-          "Cinema1",
-          "Cinema2",
-          "Cinema3"
+        "groups": [
+          "Cinema"
         ]
       },
       {
@@ -189,11 +177,8 @@
         "backend": "lifx",
         "power": false,
         "powerDuration": "5s",
-        "lights": [
-          "Cinema0",
-          "Cinema1",
-          "Cinema2",
-          "Cinema3"
+        "groups": [
+          "Cinema"
         ]
       },
       {
@@ -216,11 +201,8 @@
           "kelvin": 2750
         },
         "colorDuration": "5s",
-        "lights": [
-          "Cinema0",
-          "Cinema1",
-          "Cinema2",
-          "Cinema3"
+        "groups": [
+          "Cinema"
         ]
       },
       {
@@ -235,11 +217,8 @@
         "backend": "lifx",
         "power": false,
         "powerDuration": "5s",
-        "lights": [
-          "Cinema0",
-          "Cinema1",
-          "Cinema2",
-          "Cinema3"
+        "groups": [
+          "Cinema"
         ]
       },
       {
@@ -255,11 +234,8 @@
         "backend": "lifx",
         "power": false,
         "powerDuration": "5s",
-        "lights": [
-          "Cinema0",
-          "Cinema1",
-          "Cinema2",
-          "Cinema3"
+        "groups": [
+          "Cinema"
         ]
       },
       {
