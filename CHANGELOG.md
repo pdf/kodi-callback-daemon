@@ -1,4 +1,18 @@
 
+<a name="v1.3.0"></a>
+# v1.3.0 (2015-09-12)
+
+## :sparkles: Features
+
+- **LIFX**:
+  - Add group support ([70aafb2f](https://github.com/pdf/kodi-callback-daemon/commit/70aafb2f04286d3140371230ba21a0b1dfa3a615))
+
+## :arrow_up: Dependency Updates
+
+- **core**:
+  - Bump golifx to v0.2.0 ([6617c7b0](https://github.com/pdf/kodi-callback-daemon/commit/6617c7b07cb3fd2919b8d6fc2929c60b3edfa33b))
+
+
 <a name="v1.2.0"></a>
 # v1.2.0 (2015-08-27)
 

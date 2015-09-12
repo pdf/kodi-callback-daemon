@@ -1,3 +1,12 @@
+kodi-callback-daemon (1.3.0) unstable; urgency=medium
+
+  * README: Note that LIFX group support is coming soon
+  * :arrow_up:(core) Bump golifx to v0.2.0
+  * :sparkles:(LIFX) Add group support
+  * README: Document LIFX group support
+
+ -- Peter Fern <github@obfusc8.org>  Sat, 12 Sep 2015 20:18:37 +1000
+
 kodi-callback-daemon (1.2.0) unstable; urgency=medium
 
   * :house:(build): Migrate from godeps to goop, update goxc config
