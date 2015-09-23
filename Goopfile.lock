@@ -8,12 +8,12 @@ github.com/getsentry/raven-go #74c334d7b8aaa4fd1b4fc6aa428c36fed1699e28
 github.com/inconshreveable/mousetrap #76626ae9c91c4f2a10f34cad8ce83ea42c93bb75
 github.com/lunixbochs/struc #9c083688fecbcd6c8dea3b2edfddd49f4a7a45ff
 github.com/mitchellh/mapstructure #281073eb9eb092240d33ef253c404f1cca550309
-github.com/pdf/golifx #v0.2.1
+github.com/pdf/golifx #v0.2.2
 github.com/russross/blackfriday #8cec3a854e68dba10faabbe31c089abf4a3e57a6
 github.com/satori/go.uuid #08f0718b61e95ddba0ade3346725fe0e4bf28ca6
 github.com/shurcooL/sanitized_anchor_name #244f5ac324cb97e1987ef901a0081a77bfd8e845
-github.com/spf13/cobra #b28774dd6857dce1298bce9d192d1fe448f3b458
-github.com/spf13/pflag #f735fdff4ffb34299727eb2e3c9abab588742d41
+github.com/spf13/cobra #53d96508f5c9311f5dade714e1de7bd6a9d2af4a
+github.com/spf13/pflag #5a13a75b13d132dc7d07dd19fd260257cd9c0290
 github.com/stretchr/objx #cbeaeb16a013161a98496fad62933b1d21786672
-github.com/stretchr/testify #7c2b1e5640dcf2631213ca962d892bffa1e08860
+github.com/stretchr/testify #b8dc1cecf15bdaf1988d9e87aa7cd98d899a06d6
 github.com/tobi/airbrake-go #5b5e269e1bc398d43f67e43dafff3414a59cd5a2
