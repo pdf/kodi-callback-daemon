@@ -3,7 +3,15 @@
 	"ArtifactsDest": "build",
 	"Tasks": [
 		"interpolate-source",
-		"default",
+		"go-install",
+		"xc",
+		"codesign",
+		"copy-resources",
+		"archive-zip",
+		"archive-tar-gz",
+		"deb",
+		"deb-dev",
+		"rmbin",
 		"publish-github"
 	],
 	"BuildConstraints": "!plan9,!netbsd,!openbsd,!dragonfly,!solaris,!nacl",
