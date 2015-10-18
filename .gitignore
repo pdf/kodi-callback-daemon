@@ -1,4 +1,5 @@
 .vendor/
+vendor/
 build/
 
 kodi-callback-daemon
