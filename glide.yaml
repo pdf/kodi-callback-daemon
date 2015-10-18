@@ -24,4 +24,4 @@ import:
   - package: github.com/Sirupsen/logrus
     ref: v0.8.3
   - package: github.com/StreamBoat/kodi_jsonrpc
-    ref: v2.0.4
+    ref: v2.0.5
