@@ -1,4 +1,21 @@
 
+<a name="v1.3.3"></a>
+# v1.3.3 (2015-10-18)
+
+## :house: Housekeeping
+
+- **build**:
+  - Update goxc task list ([6a69a8cb](https://github.com/pdf/kodi-callback-daemon/commit/6a69a8cb35b10e4ce25db86dd5211e3cea63933e))
+  - Migrate from goop to glide for dependency management ([d5135dad](https://github.com/pdf/kodi-callback-daemon/commit/d5135dad2a30265403242a7dd0c033f060f5093c))  
+    <br>Enables Go 1.5 native vendoring
+
+## :arrow_up: Dependency Updates
+
+- **core**:
+  - Bump kodi_jsonrpc to v2.0.5 ([cc912ed4](https://github.com/pdf/kodi-callback-daemon/commit/cc912ed46a0254f8fad9d89d3e79caef5b0584f7))
+  - Bump golifx to v0.3.1 ([a95e1ccb](https://github.com/pdf/kodi-callback-daemon/commit/a95e1ccb302f42c3a5dc4f17b3e46106f68d107f))
+
+
 <a name="v1.3.2"></a>
 # v1.3.2 (2015-10-16)
 
