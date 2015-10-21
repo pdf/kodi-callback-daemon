@@ -3,10 +3,10 @@
 To hack on this project:
 
 1. Install as usual (`go get -u github.com/path/repo`)
-2. Install dependencies using [goop](https://github.com/nitrous-io/goop) (`goop install`)
+2. Install dependencies using [glide](https://github.com/Masterminds/glide) (`glide up`)
 3. Create your feature branch (`git checkout -b my-new-feature`)
 4. Commit your changes (`git commit -am 'Add some feature'`)
-5. Build using [goop](https://github.com/nitrous-io/goop) (`goop go install`)
+5. Build using go version 1.5+ with vendoring enabled (`GO15VENDOREXPERIMENT=1 go install`)
 
 Contribute upstream:
 

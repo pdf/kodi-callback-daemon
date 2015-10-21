@@ -497,4 +497,4 @@ The `Player.OnPlay`, `Player.OnPause` and `Player.OnStop` notifications have one
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for build/contribution details.
 
-We use [goop](https://github.com/nitrous-io/goop) for dependency management, and [goxc](https://github.com/laher/goxc) to produce release builds.
+We use [glide](https://github.com/Masterminds/glide) for dependency management, and [goxc](https://github.com/laher/goxc) to produce release builds.
