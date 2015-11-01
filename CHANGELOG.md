@@ -1,4 +1,18 @@
 
+<a name="v1.3.4"></a>
+# v1.3.4 (2015-11-02)
+
+## :house: Housekeeping
+
+- **build**:
+  - Fix goxc exclude dirs for Go 1.5 vendoring ([3e7472fa](https://github.com/pdf/kodi-callback-daemon/commit/3e7472fa8cfbe5a30381f3b133138f69f2acbb44))
+
+## :arrow_up: Dependency Updates
+
+- **core**:
+  - Bump golifx to v0.3.1 ([163b4b86](https://github.com/pdf/kodi-callback-daemon/commit/163b4b86b2a29c8c40c52bf1cbfe88309bebe350))
+
+
 <a name="v1.3.3"></a>
 # v1.3.3 (2015-10-18)
 
