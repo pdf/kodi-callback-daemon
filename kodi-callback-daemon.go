@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/StreamBoat/kodi_jsonrpc"
+	"github.com/pdf/kodi-callback-daemon/boblight"
 	"github.com/pdf/kodi-callback-daemon/config"
 	"github.com/pdf/kodi-callback-daemon/hyperion"
 	"github.com/pdf/kodi-callback-daemon/kodi"
@@ -143,14 +144,20 @@ func main() {
 
 	// If the configuration specifies a Hyperion connection, use it.
 	if cfg.Hyperion != nil {
-		hyperion.Connect(fmt.Sprintf(`%s:%d`, cfg.Hyperion.Address, cfg.Hyperion.Port))
+		hyperion.Connect(&cfg)
 		defer hyperion.Close()
 	}
 
 	// If the configuration specifies a LIFX connection, use it.
 	if cfg.LIFX != nil {
-		lifx.Connect(cfg)
+		lifx.Connect(&cfg)
 		defer lifx.Close()
+	}
+
+	// If the configuration specifies a boblight connection, use it.
+	if cfg.Boblight != nil {
+		boblight.Connect(&cfg)
+		defer boblight.Close()
 	}
 
 	// Get callbacks from configuration.

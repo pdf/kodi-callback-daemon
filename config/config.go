@@ -45,12 +45,19 @@ type LIFX struct {
 	Timeout *Timeout `json:"timeout"` // Optional
 }
 
+// Boblight stores the boblight json configuration structure
+type Boblight struct {
+	Input  *Host `json:"input"`
+	Output *Host `json:"output"`
+}
+
 // Config stores the json configuration structure.
 type Config struct {
 	XBMC      *Host       `json:"xbmc"`      // Deprecated
 	Kodi      *Host       `json:"kodi"`      // Required (if XBMC not provided)
 	Hyperion  *Host       `json:"hyperion"`  // Optional
 	LIFX      *LIFX       `json:"lifx"`      // Optional
+	Boblight  *Boblight   `json:"boblight"`  // Optional
 	Debug     *bool       `json:"debug"`     // Optional
 	Callbacks interface{} `json:"callbacks"` // Required
 }

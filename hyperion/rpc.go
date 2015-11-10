@@ -2,6 +2,7 @@ package hyperion
 
 import (
 	"encoding/json"
+	"fmt"
 	"io"
 	"net"
 	"reflect"
@@ -9,13 +10,14 @@ import (
 	"time"
 
 	log "github.com/Sirupsen/logrus"
+	"github.com/pdf/kodi-callback-daemon/config"
 )
 
 var (
-	connAddress string
-	conn        net.Conn
-	encoder     *json.Encoder
-	decoder     *json.Decoder
+	cfg     *config.Config
+	conn    net.Conn
+	encoder *json.Encoder
+	decoder *json.Decoder
 )
 
 // Response stores Hyperion results for RPC calls.
@@ -43,11 +45,13 @@ func (f qtfloat64) MarshalJSON() ([]byte, error) {
 
 // Connect establishes a TCP connection to the specified address and attaches
 // JSON encoders/decoders.
-func Connect(address string) {
-	if connAddress == `` {
-		connAddress = address
+func Connect(conf *config.Config) {
+	var err error
+	if cfg == nil {
+		cfg = conf
 	}
-	conn, err := net.Dial(`tcp`, address)
+	address := fmt.Sprintf(`%s:%d`, cfg.Hyperion.Address, cfg.Hyperion.Port)
+	conn, err = net.Dial(`tcp`, address)
 	for err != nil {
 		log.WithField(`error`, err).Error(`Connecting to Hyperion`)
 		log.Info(`Attempting reconnect...`)
@@ -109,7 +113,7 @@ func Read(response *Response) {
 	// TODO: This probably needs to be more robust.
 	if _, ok := err.(net.Error); err == io.EOF || ok {
 		log.WithField(`error`, err).Error(`Reading from Hyperion`)
-		Connect(connAddress)
+		Connect(cfg)
 	} else if err != nil {
 		log.WithField(`error`, err).Error(`Decoding response from Hyperion`)
 		return
@@ -137,7 +141,7 @@ func Execute(callback map[string]interface{}) {
 	err := encoder.Encode(&cb)
 	if _, ok := err.(net.Error); ok {
 		log.WithField(`error`, err).Error(`Writing to Hyperion`)
-		Connect(connAddress)
+		Connect(cfg)
 		if err := encoder.Encode(&cb); err != nil {
 			log.WithField(`error`, err).Error(`Failed writing to Hyperion`)
 		}
