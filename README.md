@@ -23,6 +23,9 @@ The LIFX backend submits callbacks via the LIFX LAN protocol.  Callbacks are wri
 ### Shell
 The shell backend simply executes a command on the system with specified arguments.
 
+### Boblight
+The daemon can act as a boblight proxy, which allows sampling of boblight data to drive lifx lights.  This is a not a typical backend as it does not allow executing any callbacks, but is listed here as it is initialized in the same way as other backends, further documentation on this is provided below.
+
 ## Installation
 Grab the [Latest Release](https://github.com/pdf/kodi-callback-daemon/releases/latest) as a compiled binary and either install it using your package manager (Debian/Ubuntu/derivs, via the `.deb` package), or extract `kodi-callback-daemon` to somewhere on your path (eg - `/usr/local/bin`) on Linux/OSX/FreeBSD, or where ever on Windows.
 
@@ -157,6 +160,28 @@ You can optionally include a timeout for operations, if you're finding it unreli
 }
 ```
 
+### Boblight Connection
+If you're using the Boblight proxy, you must declare both the input (listen) and output (hyperion/boblightd) sockets. You can either configure the input to use the standard boblight port (19333), and configure the output and your boblight daemon (hyperion/boblightd) to use an alternative port (19332 in the example below), or do the opposite and have the boblight client connect to a different port.
+
+```json
+{
+  "kodi": {
+    "address": "127.0.0.1",
+    "port": 9090
+  },
+  "boblight": {
+    "input": {
+      "address": "127.0.0.1",
+      "port": 19333
+    },
+    "output": {
+      "address": "127.0.0.1",
+      "port": 19332
+    }
+  }
+}
+```
+
 ### Debug logging
 You can enable debug logging by setting the debug property to `true`:
 
@@ -277,7 +302,6 @@ And if we wanted to run this callback on `Startup`, and on `Player.OnStop` notif
     "address": "127.0.0.1",
     "port": 19444
   },
-  "debug": true,
   "callbacks": {
     "Startup": [
       {
@@ -312,6 +336,7 @@ Property | Value | Example | Comment
 `powerDuration` | time string `<number><unit>` | `"powerDuration": 5s` | Defines the duration of the power transition, this will fade your lights on or off over the specified duration (example is 5 seconds).  Only valid if combined with `power`.
 `color` | color object (HSBK) | `"color": {"hue": 0, "brightness": 65535, "saturation": 65535, kelvin: 2500}` | The color object must contain all of the `hue`, `brightness`, `saturation` and `kelvin` properties to be valid.  The range of valid values is 0-65535 for `hue`, `saturation` and `brightness`, and 2500-9000 for `kelvin`.  The `kelvin` value sets the warmth of white light in degrees, and only applies when `saturation` is near zero.
 `colorDuration` | time string `<number><unit>` | `"powerDuration": 5s` | Defines the duration of the color transition, this will fade your lights between colors over the specified duration (example is 5 seconds).  Only valid if combined with `color`.
+`boblight` | boblight object | `"boblight": {"lights": [5, 6, 7, 8], "rateLimit": "40ms"}` | The boblight object must contain an array of light IDs `lights` (as configured in your boblight daemon) from which an average color will be calculated, and may optionally specify a `rateLimit` of the format `<number><unit>`, which allows you to reduce the rate at which lights are updated and defaults to the minimum value of `20ms`.
 `lights` | array of light labels | `"lights": ["Lounge1", "Lounge2"]` | Defines the list of lights that the callback will apply to, by their labels.
 `groups` | array of group labels | `"groups": ["Cinema", "Kitchen"]` | Defines the list of groups that the callback will apply to, by their labels.
 
@@ -346,7 +371,6 @@ And if we wanted to run a callback on `Player.OnPlay`, and on `Player.OnStop` no
     "port": 9090
   },
   "lifx": {},
-  "debug": true,
   "callbacks": {
     "Player.OnPlay": [
       {
@@ -379,6 +403,57 @@ And if we wanted to run a callback on `Player.OnPlay`, and on `Player.OnStop` no
         "colorDuration": "2s",
         "groups": [
           "Cinema"
+        ]
+      }
+    ]
+  }
+}
+```
+
+Using the boblight proxy to update LIFX lights dynamically might look like this, if we wanted to take samples from lights on each side of our boblight output, and send the average of those boblights to two separate LIFX lights, with a moderately sedate update interval of 200ms:
+
+
+```json
+{
+  "kodi": {
+    "address": "127.0.0.1",
+    "port": 9090
+  },
+  "lifx": {},
+  "boblight": {
+    "input": {
+      "address": "127.0.0.1",
+      "port": 19333
+    },
+    "output": {
+      "address": "127.0.0.1",
+      "port": 19332
+    }
+  },
+  "callbacks": {
+    "Player.OnPlay": [
+      {
+        "backend": "lifx",
+        "power": true,
+        "powerDuration": "2s",
+        "boblight": {
+          "lights": [5,6,7,8,9,10,11,12,13,14,15],
+          "rateLimit": "200ms"
+        },
+        "lights": [
+          "LeftLight"
+        ]
+      },
+      {
+        "backend": "lifx",
+        "power": true,
+        "powerDuration": "2s",
+        "boblight": {
+          "lights": [32,33,34,35,36,37,38,39,40,41,42],
+          "rateLimit": "200ms"
+        },
+        "lights": [
+          "LeftLight"
         ]
       }
     ]

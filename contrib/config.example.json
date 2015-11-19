@@ -11,7 +11,18 @@
 
   "lifx": {},
 
-  "debug": true,
+  "boblight": {
+    "input": {
+      "address": "127.0.0.1",
+      "port": 19333
+    },
+    "output": {
+      "address": "127.0.0.1",
+      "port": 19332
+    }
+  },
+
+  "debug": false,
 
   "callbacks": {
     "Startup": [
@@ -87,6 +98,30 @@
       },
       {
         "types": ["song"],
+        "backend": "lifx",
+        "power": true,
+        "boblight": {
+          "lights": [5,6,7,8,9,10,11,12,13,14,15],
+          "rateLimit": "40ms"
+        },
+        "lights": [
+          "CinemaLeft"
+        ]
+      },
+      {
+        "types": ["song"],
+        "backend": "lifx",
+        "power": true,
+        "boblight": {
+          "lights": [32,33,34,35,36,37,38,39,40,41,42],
+          "rateLimit": "40ms"
+        },
+        "lights": [
+          "CinemaRight"
+        ]
+      },
+      {
+        "types": ["song"],
         "backend": "hyperion",
         "command": "transform",
         "transform": {
@@ -108,9 +143,9 @@
         "power": true,
         "powerDuration": "3s",
         "color": {
-          "hue": 0,
-          "saturation": 0,
-          "brightness": 20000,
+          "hue": 8000,
+          "saturation": 50000,
+          "brightness": 30000,
           "kelvin": 2750
         },
         "colorDuration": "3s",
