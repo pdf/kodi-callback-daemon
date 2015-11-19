@@ -1,3 +1,12 @@
+kodi-callback-daemon (1.4.0) unstable; urgency=medium
+
+  * :sparkles:(lifx) Boblight proxy support
+  * :arrow_up:(core) Bump golifx to v0.3.6
+  * Document boblight proxy usage
+  * Bump to v1.4.0
+
+ -- Peter Fern <github@obfusc8.org>  Fri, 20 Nov 2015 00:28:16 +1100
+
 kodi-callback-daemon (1.3.5) unstable; urgency=medium
 
   * :arrow_up:(core) Bump golifx to v0.3.4

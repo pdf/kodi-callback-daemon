@@ -1,4 +1,19 @@
 
+<a name="v1.4.0"></a>
+# v1.4.0 (2015-11-20)
+
+## :sparkles: Features
+
+- **lifx**:
+  - Boblight proxy support ([a03e5b70](https://github.com/pdf/kodi-callback-daemon/commit/a03e5b702adca6820bb3110dc661a7a8ab52fd32))
+
+## :arrow_up: Dependency Updates
+
+- **core**:
+  - Bump golifx to v0.3.6 ([9bcff4af](https://github.com/pdf/kodi-callback-daemon/commit/9bcff4afbca6a97e3604b35f5f108b25fd823c66))  
+    <br>Use the newly exposed color averaging from golifx for more accurate hues
+
+
 <a name="v1.3.5"></a>
 # v1.3.5 (2015-11-10)
 
