@@ -109,30 +109,17 @@ func (b *boblightSync) sync(l common.Light, boblightIDs []uint16, rateLimit time
 			ticker.Stop()
 			return
 		case <-ticker.C:
-			var (
-				hueSum, satSum, brightSum, kelvSum uint64
-				color                              common.Color
-			)
+			colors := make([]common.Color, len(boblightIDs))
 
-			for _, id := range boblightIDs {
+			for i, id := range boblightIDs {
 				bColor, err := boblight.Lights.Get(id)
 				if err != nil {
 					continue
 				}
-				colr := bColor.ToLifx()
-
-				hueSum += uint64(colr.Hue)
-				satSum += uint64(colr.Saturation)
-				brightSum += uint64(colr.Brightness)
-				kelvSum += uint64(colr.Kelvin)
+				colors[i] = bColor.ToLifx()
 			}
 
-			color.Hue = uint16(hueSum / uint64(len(boblightIDs)))
-			color.Saturation = uint16(satSum / uint64(len(boblightIDs)))
-			color.Brightness = uint16(brightSum / uint64(len(boblightIDs)))
-			color.Kelvin = uint16(kelvSum / uint64(len(boblightIDs)))
-
-			if err := l.SetColor(color, rateLimit); err != nil {
+			if err := l.SetColor(common.AverageColor(colors...), rateLimit); err != nil {
 				continue
 			}
 		}
