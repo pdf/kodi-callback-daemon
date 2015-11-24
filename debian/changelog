@@ -1,3 +1,10 @@
+kodi-callback-daemon (1.4.1) unstable; urgency=medium
+
+  * :bug:(boblight) Refactor boblight proxy, fix channel double-close
+  * Bump to v1.4.1
+
+ -- Peter Fern <github@obfusc8.org>  Tue, 24 Nov 2015 22:35:07 +1100
+
 kodi-callback-daemon (1.4.0) unstable; urgency=medium
 
   * :sparkles:(lifx) Boblight proxy support

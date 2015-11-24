@@ -1,11 +1,25 @@
 
-<a name="v1.4.0"></a>
-# v1.4.0 (2015-11-20)
+<a name="v1.4.1"></a>
+# v1.4.1 (2015-11-24)
+
+## :bug: Bug Fixes
+
+- **boblight**:
+  - Refactor boblight proxy, fix channel double-close ([4bbfe7ad](https://github.com/pdf/kodi-callback-daemon/commit/4bbfe7adcff77d1cb540306fc59d1f04dd5fba1c))
+
+
+<a name="v1.3.6"></a>
+# v1.3.6 (2015-11-24)
 
 ## :sparkles: Features
 
 - **lifx**:
   - Boblight proxy support ([a03e5b70](https://github.com/pdf/kodi-callback-daemon/commit/a03e5b702adca6820bb3110dc661a7a8ab52fd32))
+
+## :bug: Bug Fixes
+
+- **boblight**:
+  - Refactor boblight proxy, fix channel double-close ([4bbfe7ad](https://github.com/pdf/kodi-callback-daemon/commit/4bbfe7adcff77d1cb540306fc59d1f04dd5fba1c))
 
 ## :arrow_up: Dependency Updates
 

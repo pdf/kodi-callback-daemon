@@ -18,7 +18,7 @@ import (
 
 const (
 	// VERSION of the application
-	VERSION = "1.4.0"
+	VERSION = "1.4.1"
 	// LIFXDELAY delays startup execution to allow LIFX devices to report their
 	// group membership
 	LIFXDELAY = 3 * time.Second
