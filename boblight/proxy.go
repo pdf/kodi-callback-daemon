@@ -25,6 +25,12 @@ var (
 	cfg         *config.Config
 )
 
+type proxy struct {
+	inputConn, outputConn *net.TCPConn
+	inputAddr, outputAddr *net.TCPAddr
+	doneChan              chan struct{}
+}
+
 // Color in boblight format (components in range 0.0 - 1.0)
 type Color struct {
 	colorful.Color
@@ -83,65 +89,82 @@ func listen(inputAddr, outputAddr *net.TCPAddr) {
 				log.WithField(`error`, err).Error(`Failed accepting boblight connection`)
 				continue
 			}
-			go start(conn, inputAddr, outputAddr)
+			go newProxy(conn, inputAddr, outputAddr).start()
 		}
 	}
 }
 
-func start(inputConn *net.TCPConn, inputAddr, outputAddr *net.TCPAddr) {
+func (p *proxy) start() {
+	var err error
+
 	defer func() {
-		if err := inputConn.Close(); err != nil {
+		if err := p.inputConn.Close(); err != nil {
 			log.WithField(`error`, err).Error(`Failed closing boblight listener`)
 		}
 	}()
 
-	outputConn, err := net.DialTCP(`tcp`, nil, outputAddr)
+	p.outputConn, err = net.DialTCP(`tcp`, nil, p.outputAddr)
 	if err != nil {
 		log.WithField(`error`, err).Error(`Failed connecting to boblight output address`)
 		return
 	}
 
-	done := make(chan struct{})
-	go proxy(inputConn, outputConn, true, done)
-	go proxy(outputConn, inputConn, false, done)
+	go p.proxy(true)
+	go p.proxy(false)
 	select {
-	case <-done:
+	case <-p.doneChan:
 		return
 	case <-quitChan:
 		return
 	}
 }
 
-func proxy(input, output *net.TCPConn, shouldParse bool, done chan struct{}) {
+func (p *proxy) proxy(input bool) {
 	for {
 		select {
-		case <-done:
+		case <-p.doneChan:
 			return
 		case <-quitChan:
 			return
 		default:
+			var src, dst *net.TCPConn
+			if input {
+				src, dst = p.inputConn, p.outputConn
+			} else {
+				src, dst = p.outputConn, p.inputConn
+			}
+
 			data := make([]byte, 0xffff)
-			n, err := input.Read(data)
+			n, err := src.Read(data)
 			if err != nil {
 				if err != io.EOF {
 					log.WithField(`error`, err).Warn(`Boblight proxy read failed`)
 				}
-				close(done)
+				p.done()
 				return
 			}
 
-			if _, err = output.Write(data[:n]); err != nil {
+			if _, err = dst.Write(data[:n]); err != nil {
 				if err != io.EOF {
 					log.WithField(`error`, err).Warn(`Boblight proxy write failed`)
 				}
-				close(done)
+				p.done()
 				return
 			}
 
-			if shouldParse {
+			if input {
 				parse(data[:n])
 			}
 		}
+	}
+}
+
+func (p *proxy) done() {
+	select {
+	case <-p.doneChan:
+		return
+	default:
+		close(p.doneChan)
 	}
 }
 
@@ -216,5 +239,14 @@ func Close() {
 func newLightMap() *LightMap {
 	return &LightMap{
 		lights: make(map[uint16]*Color),
+	}
+}
+
+func newProxy(inputConn *net.TCPConn, inputAddr, outputAddr *net.TCPAddr) *proxy {
+	return &proxy{
+		inputConn:  inputConn,
+		inputAddr:  inputAddr,
+		outputAddr: outputAddr,
+		doneChan:   make(chan struct{}),
 	}
 }
