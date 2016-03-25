@@ -20,7 +20,7 @@ import:
   - package: github.com/mitchellh/mapstructure
     ref: 281073eb9eb092240d33ef253c404f1cca550309
   - package: github.com/pdf/golifx
-    ref: v0.3.6
+    ref: v0.4.0
   - package: github.com/Sirupsen/logrus
     ref: v0.8.3
   - package: github.com/StreamBoat/kodi_jsonrpc
