@@ -1,3 +1,10 @@
+kodi-callback-daemon (1.4.1ubuntu1) vivid; urgency=medium
+
+  * :arrow_up:(core) Bump golifx to v0.4.0
+  * Commit glide.lock
+
+ -- Peter Fern <github@obfusc8.org>  Sat, 26 Mar 2016 00:12:56 +1100
+
 kodi-callback-daemon (1.4.1) unstable; urgency=medium
 
   * :bug:(boblight) Refactor boblight proxy, fix channel double-close
