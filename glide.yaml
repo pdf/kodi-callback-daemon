@@ -22,6 +22,6 @@ import:
   - package: github.com/pdf/golifx
     ref: v0.4.0
   - package: github.com/Sirupsen/logrus
-    ref: v0.8.3
-  - package: github.com/StreamBoat/kodi_jsonrpc
-    ref: v2.0.5
+    ref: v0.10.0
+  - package: github.com/pdf/kodirpc
+    ref: v0.0.1

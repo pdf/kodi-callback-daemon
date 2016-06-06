@@ -5,15 +5,16 @@ import (
 	"os"
 	"time"
 
-	"github.com/StreamBoat/kodi_jsonrpc"
+	"github.com/pdf/golifx"
 	"github.com/pdf/kodi-callback-daemon/boblight"
 	"github.com/pdf/kodi-callback-daemon/config"
 	"github.com/pdf/kodi-callback-daemon/hyperion"
 	"github.com/pdf/kodi-callback-daemon/kodi"
 	"github.com/pdf/kodi-callback-daemon/lifx"
 	"github.com/pdf/kodi-callback-daemon/shell"
+	"github.com/pdf/kodirpc"
 
-	log "github.com/Sirupsen/logrus"
+	"github.com/Sirupsen/logrus"
 )
 
 const (
@@ -25,8 +26,9 @@ const (
 )
 
 var (
+	log *logrus.Logger
 	cfg config.Config
-	k   kodi_jsonrpc.Connection
+	k   *kodirpc.Client
 )
 
 // usage simply prints the invocation requirements.
@@ -40,104 +42,98 @@ func init() {
 	if len(os.Args) < 2 {
 		usage()
 	}
+	log = logrus.New()
 
 	// Initialize logger
 	cfg = config.Load(os.Args[1])
-	if cfg.Debug != nil && *cfg.Debug == true {
-		log.SetLevel(log.DebugLevel)
+	if cfg.Debug != nil && *cfg.Debug {
+		log.Level = logrus.DebugLevel
 	} else {
-		log.SetLevel(log.InfoLevel)
+		log.Level = logrus.InfoLevel
 	}
 }
 
-// execute iterates through a list of callbacks, and sends them to the backend
-// defined in the `backend` property.
-func execute(callbacks []interface{}) {
-	for i := range callbacks {
-		m := callbacks[i].(map[string]interface{})
+type handler struct {
+	params map[string]interface{}
+}
 
-		switch m[`backend`] {
-		case `hyperion`:
-			if cfg.Hyperion != nil {
-				hyperion.Execute(m)
-			}
-
-		case `lifx`:
-			if cfg.LIFX != nil {
-				lifx.Execute(m)
-			}
-
-		case `kodi`, `xbmc`:
-			kodi.Execute(&k, m)
-
-		case `shell`:
-			shell.Execute(m)
-
-		default:
-			log.WithField(`backend`, m[`backend`]).Warn(`Unknown backend`)
+func (h *handler) typedCallback(method string, data interface{}) {
+	switch h.params[`types`].(type) {
+	case []interface{}:
+		d, ok := data.(map[string]interface{})
+		if !ok {
+			log.WithField(`data`, data).Error(`Invalid notification structure`)
+			return
 		}
+		for _, t := range h.params[`types`].([]interface{}) {
+			item, ok := d[`item`].(map[string]interface{})
+			if !ok {
+				log.WithField(`data`, data).Error(`Invalid notification structure`)
+				return
+			}
+			if t.(string) == item[`type`] {
+				h.callback(method, data)
+			}
+		}
+	default:
+		h.callback(method, data)
 	}
 }
 
-// callbacksByType takes a type to match, and a list of callbacks. If the
-// callback has a `types` property, and that contains a matching type, the
-// callback is added to the returned list.  A callback without a `types`
-// property will always be returned.
-func callbacksByType(matchType string, callbacks []interface{}) []interface{} {
-	var result []interface{}
-	var cb map[string]interface{}
-
-	for i := range callbacks {
-		// Access internal callback map.
-		cb = callbacks[i].(map[string]interface{})
-
-		switch cb[`types`].(type) {
-		// We have a list of types.
-		case []interface{}:
-			// Access internal types slice.
-			cbTypes, ok := cb[`types`].([]interface{})
-			if ok == false {
-				log.Fatal(`Couldn't understand 'types' array, check your configuration.`)
-			}
-			for j := range cbTypes {
-				if cbTypes[j].(string) == matchType {
-					// Matched the required type, add this callback to the results.
-					result = append(result, cb)
-				}
-			}
-		// If there is no valid `types` property, add this callback to the results.
-		default:
-			result = append(result, cb)
+func (h *handler) callback(method string, data interface{}) {
+	switch h.params[`backend`].(string) {
+	case `hyperion`:
+		if cfg.Hyperion != nil {
+			hyperion.Execute(h.params)
 		}
-	}
 
-	return result
+	case `lifx`:
+		if cfg.LIFX != nil {
+			lifx.Execute(h.params)
+		}
+
+	case `kodi`, `xbmc`:
+		kodi.Execute(k, h.params)
+
+	case `shell`:
+		shell.Execute(h.params)
+
+	default:
+		log.WithField(`backend`, h.params[`backend`]).Warn(`Unknown backend`)
+	}
 }
 
 // main program loop.
 func main() {
 	var host config.Host
 	// Connect to Kodi, this is required.
-	kodiTimeout := time.Duration(0)
+	kodirpc.SetLogger(log)
+	kodiConfig := kodirpc.NewConfig()
+	kodiConfig.ConnectTimeout = 0
 	if cfg.Kodi != nil {
 		if cfg.Kodi.Timeout != nil {
-			kodiTimeout = time.Duration(*cfg.Kodi.Timeout)
+			kodiConfig.ReadTimeout = time.Duration(*cfg.Kodi.Timeout)
 		}
 		host = *cfg.Kodi
 	} else if cfg.XBMC != nil {
 		if cfg.XBMC.Timeout != nil {
-			kodiTimeout = time.Duration(*cfg.XBMC.Timeout)
+			kodiConfig.ReadTimeout = time.Duration(*cfg.XBMC.Timeout)
 		}
 		host = *cfg.XBMC
 	} else {
 		log.Fatal(`You must provide Kodi/XBMC connection details in your configuration`)
 	}
-	k, err := kodi_jsonrpc.New(
-		fmt.Sprintf(`%s:%d`, host.Address, host.Port),
-		kodiTimeout,
-	)
 
-	defer k.Close()
+	k, err := kodirpc.NewClient(
+		fmt.Sprintf(`%s:%d`, host.Address, host.Port),
+		kodiConfig,
+	)
+	defer func() {
+		if err = k.Close(); err != nil {
+			log.Panicln(err)
+		}
+	}()
+
 	if err != nil {
 		log.WithField(`error`, err).Fatal(`Failed to obtain Kodi connection`)
 	}
@@ -150,6 +146,8 @@ func main() {
 
 	// If the configuration specifies a LIFX connection, use it.
 	if cfg.LIFX != nil {
+		golifx.SetLogger(log)
+
 		lifx.Connect(&cfg)
 		defer lifx.Close()
 	}
@@ -163,6 +161,7 @@ func main() {
 	// Get callbacks from configuration.
 	callbacks := cfg.Callbacks.(map[string]interface{})
 
+	var h *handler
 	// Execute callbacks for the special `Startup` notification.
 	if callbacks[`Startup`] != nil {
 		// LIFX groups take some time to populate, so we add an arbitrary delay
@@ -170,22 +169,27 @@ func main() {
 		if cfg.LIFX != nil {
 			time.Sleep(LIFXDELAY)
 		}
-		execute(callbacks[`Startup`].([]interface{}))
-	}
 
-	// Loop while reading from Kodi.
-	for {
-		// Read from Kodi.
-		notification := <-k.Notifications
-
-		// Match Kodi notification to our configured callbacks.
-		if callbacks[notification.Method] != nil {
-			cbs := callbacks[notification.Method].([]interface{})
-			switch notification.Method {
-			case `Player.OnPlay`, `Player.OnPause`, `Player.OnStop`:
-				cbs = callbacksByType(notification.Params.Data.Item.Type, cbs)
-			}
-			execute(cbs)
+		for _, cb := range callbacks[`Startup`].([]interface{}) {
+			h = &handler{params: cb.(map[string]interface{})}
+			h.callback(``, nil)
 		}
 	}
+
+	for key, value := range callbacks {
+		for _, cb := range value.([]interface{}) {
+			h = &handler{}
+			h.params = cb.(map[string]interface{})
+			switch key {
+			case `Player.OnPlay`, `Player.OnPause`, `Player.OnStop`:
+				k.Handle(key, h.typedCallback)
+			default:
+				k.Handle(key, h.callback)
+			}
+		}
+	}
+
+	wait := make(chan struct{})
+	defer close(wait)
+	<-wait
 }
