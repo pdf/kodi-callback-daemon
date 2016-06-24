@@ -47,15 +47,22 @@ type LIFX struct {
 
 // Boblight stores the boblight json configuration structure
 type Boblight struct {
-	Input  *Host `json:"input"`
-	Output *Host `json:"output"`
+	Input  *Host `json:"input"`  // Required
+	Output *Host `json:"output"` // Required
+}
+
+// Hyperion stores the hyperion json configuration structure
+type Hyperion struct {
+	Input  *Host `json:"input"`  // Optional
+	Output *Host `json:"output"` // Required, unless legacy configuration
+	*Host        // Embedded host to support legacy configuration
 }
 
 // Config stores the json configuration structure.
 type Config struct {
 	XBMC      *Host       `json:"xbmc"`      // Deprecated
 	Kodi      *Host       `json:"kodi"`      // Required (if XBMC not provided)
-	Hyperion  *Host       `json:"hyperion"`  // Optional
+	Hyperion  *Hyperion   `json:"hyperion"`  // Optional
 	LIFX      *LIFX       `json:"lifx"`      // Optional
 	Boblight  *Boblight   `json:"boblight"`  // Optional
 	Debug     *bool       `json:"debug"`     // Optional

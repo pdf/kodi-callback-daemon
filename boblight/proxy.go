@@ -8,17 +8,16 @@ import (
 	"net"
 	"regexp"
 	"strconv"
-	"sync"
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/lucasb-eyer/go-colorful"
-	"github.com/pdf/golifx/common"
+	"github.com/pdf/kodi-callback-daemon/common"
 	"github.com/pdf/kodi-callback-daemon/config"
 )
 
 var (
 	// Lights provides access to the current light state
-	Lights = newLightMap()
+	Lights = common.NewLightMap()
 
 	lightRegexp = regexp.MustCompile(`^set light ([0-9]+) rgb ([0-9.]+) ([0-9.]+) ([0-9.]+)$`)
 	quitChan    = make(chan struct{})
@@ -29,45 +28,6 @@ type proxy struct {
 	inputConn, outputConn *net.TCPConn
 	inputAddr, outputAddr *net.TCPAddr
 	doneChan              chan struct{}
-}
-
-// Color in boblight format (components in range 0.0 - 1.0)
-type Color struct {
-	colorful.Color
-}
-
-// ToLifx returns a golifx-compatible color
-func (c *Color) ToLifx() (lifxColor common.Color) {
-	h, s, v := c.Hsv()
-	lifxColor.Hue = uint16((h / 360) * 65535)
-	lifxColor.Saturation = uint16(s * 65535)
-	lifxColor.Brightness = uint16(v * 65535)
-	lifxColor.Kelvin = 0xffff
-	return lifxColor
-}
-
-// LightMap provides storage for the current light state
-type LightMap struct {
-	lights map[uint16]*Color
-	sync.RWMutex
-}
-
-// Get returns the last known state for the requested light ID, or error if
-// unknown
-func (l *LightMap) Get(id uint16) (color *Color, err error) {
-	l.RLock()
-	color, ok := l.lights[id]
-	l.RUnlock()
-	if !ok {
-		return color, fmt.Errorf("Unkown light ID: %d", id)
-	}
-	return color, nil
-}
-
-func (l *LightMap) set(id uint16, color *Color) {
-	l.Lock()
-	l.lights[id] = color
-	l.Unlock()
 }
 
 func listen(inputAddr, outputAddr *net.TCPAddr) {
@@ -98,7 +58,7 @@ func (p *proxy) start() {
 	var err error
 
 	defer func() {
-		if err := p.inputConn.Close(); err != nil {
+		if err = p.inputConn.Close(); err != nil {
 			log.WithField(`error`, err).Error(`Failed closing boblight listener`)
 		}
 	}()
@@ -199,9 +159,9 @@ func parse(data []byte) {
 		if err != nil {
 			continue
 		}
-		Lights.set(
+		Lights.Set(
 			uint16(id),
-			&Color{colorful.Color{
+			&common.Color{colorful.Color{
 				R: r,
 				G: g,
 				B: b,
@@ -233,13 +193,6 @@ func Connect(conf *config.Config) {
 // Close Boblight proxy
 func Close() {
 	close(quitChan)
-}
-
-// newLightMap initializes a new LightMap
-func newLightMap() *LightMap {
-	return &LightMap{
-		lights: make(map[uint16]*Color),
-	}
 }
 
 func newProxy(inputConn *net.TCPConn, inputAddr, outputAddr *net.TCPAddr) *proxy {

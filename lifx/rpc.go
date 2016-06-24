@@ -8,15 +8,24 @@ import (
 	"github.com/mitchellh/mapstructure"
 
 	"github.com/pdf/golifx"
-	"github.com/pdf/golifx/common"
+	lifxcommon "github.com/pdf/golifx/common"
 	"github.com/pdf/golifx/protocol"
 	"github.com/pdf/kodi-callback-daemon/boblight"
+	"github.com/pdf/kodi-callback-daemon/common"
 	"github.com/pdf/kodi-callback-daemon/config"
+	"github.com/pdf/kodi-callback-daemon/hyperion"
 )
 
 type closer chan struct{}
 
-type lifxBoblightCallback struct {
+type ledCallbackType uint8
+
+const (
+	ledCallbackBoblight ledCallbackType = iota
+	ledCallbackHyperion
+)
+
+type lifxLEDCallback struct {
 	Lights    []uint16
 	RateLimit time.Duration
 }
@@ -24,20 +33,24 @@ type lifxBoblightCallback struct {
 type lifxCallback struct {
 	Power         bool
 	PowerDuration time.Duration
-	Color         common.Color
+	Color         lifxcommon.Color
 	ColorDuration time.Duration
-	Boblight      lifxBoblightCallback
+	Boblight      lifxLEDCallback
+	Hyperion      lifxLEDCallback
 	Lights        []string
 	Groups        []string
 }
 
-type boblightSync struct {
+type ledSync struct {
 	lights map[uint64]closer
 	sync.RWMutex
 }
 
-func (b *boblightSync) add(l common.Light, boblightIDs []uint16, rateLimit time.Duration) {
-	log.WithField(`light`, l.ID()).Debug(`Adding boblight sync`)
+func (b *ledSync) add(l lifxcommon.Light, ledIDs []uint16, rateLimit time.Duration, kind ledCallbackType) {
+	log.WithFields(log.Fields{
+		`light`: l.ID(),
+		`kind`:  kind,
+	}).Debug(`Adding LED sync`)
 	b.RLock()
 	_, ok := b.lights[l.ID()]
 	b.RUnlock()
@@ -48,13 +61,13 @@ func (b *boblightSync) add(l common.Light, boblightIDs []uint16, rateLimit time.
 	c := make(closer)
 	b.Lock()
 	b.lights[l.ID()] = c
-	go b.sync(l, boblightIDs, rateLimit, c)
+	go b.sync(l, ledIDs, rateLimit, c, kind)
 	b.Unlock()
 }
 
-func (b *boblightSync) remove(l common.Light) {
+func (b *ledSync) remove(l lifxcommon.Light) {
 	b.Lock()
-	log.WithField(`light`, l.ID()).Debug(`Removing boblight sync`)
+	log.WithField(`light`, l.ID()).Debug(`Removing LED sync`)
 	if c, ok := b.lights[l.ID()]; ok {
 		close(c)
 		delete(b.lights, l.ID())
@@ -62,7 +75,7 @@ func (b *boblightSync) remove(l common.Light) {
 	b.Unlock()
 }
 
-func (b *boblightSync) stop() {
+func (b *ledSync) stop() {
 	b.Lock()
 	for id, c := range b.lights {
 		close(c)
@@ -71,37 +84,41 @@ func (b *boblightSync) stop() {
 	b.Unlock()
 }
 
-func (b *boblightSync) cancel(cb *lifxCallback) {
-	log.WithField(`callback`, cb).Debug(`Cancelling boblight sync`)
+func (b *ledSync) cancel(cb *lifxCallback) {
+	log.WithField(`callback`, cb).Debug(`Cancelling LED sync`)
 	if len(cb.Lights) == 0 && len(cb.Groups) == 0 {
-		log.Debug(`Stopping boblight sync`)
+		log.Debug(`Stopping LED sync`)
 		b.stop()
 	}
 	if len(cb.Lights) > 0 {
-		log.WithField(`lights`, cb.Lights).Debug(`Cancelling boblight sync`)
+		log.WithField(`lights`, cb.Lights).Debug(`Cancelling LED sync`)
 		for _, label := range cb.Lights {
 			light, err := client.GetLightByLabel(label)
 			if err != nil {
 				continue
 			}
-			boblights.remove(light)
+			leds.remove(light)
 		}
 	}
 	if len(cb.Groups) > 0 {
-		log.WithField(`groups`, cb.Groups).Debug(`Cancelling boblight sync`)
+		log.WithField(`groups`, cb.Groups).Debug(`Cancelling LED sync`)
 		for _, label := range cb.Groups {
 			group, err := client.GetGroupByLabel(label)
 			if err != nil {
 				continue
 			}
 			for _, light := range group.Lights() {
-				boblights.remove(light)
+				leds.remove(light)
 			}
 		}
 	}
 }
 
-func (b *boblightSync) sync(l common.Light, boblightIDs []uint16, rateLimit time.Duration, c closer) {
+func (b *ledSync) sync(l lifxcommon.Light, ledIDs []uint16, rateLimit time.Duration, c closer, kind ledCallbackType) {
+	var (
+		ledColor *common.Color
+		err      error
+	)
 	ticker := time.NewTicker(time.Second / 20)
 	for {
 		select {
@@ -109,17 +126,24 @@ func (b *boblightSync) sync(l common.Light, boblightIDs []uint16, rateLimit time
 			ticker.Stop()
 			return
 		case <-ticker.C:
-			colors := make([]common.Color, len(boblightIDs))
+			colors := make([]lifxcommon.Color, len(ledIDs))
 
-			for i, id := range boblightIDs {
-				bColor, err := boblight.Lights.Get(id)
+			for i, id := range ledIDs {
+				switch kind {
+				case ledCallbackBoblight:
+					ledColor, err = boblight.Lights.Get(id)
+				case ledCallbackHyperion:
+					ledColor, err = hyperion.Lights.Get(id)
+				default:
+					continue
+				}
 				if err != nil {
 					continue
 				}
-				colors[i] = bColor.ToLifx()
+				colors[i] = ledColor.ToLifx()
 			}
 
-			if err := l.SetColor(common.AverageColor(colors...), rateLimit); err != nil {
+			if err := l.SetColor(lifxcommon.AverageColor(colors...), rateLimit); err != nil {
 				continue
 			}
 		}
@@ -127,8 +151,8 @@ func (b *boblightSync) sync(l common.Light, boblightIDs []uint16, rateLimit time
 }
 
 var (
-	client    *golifx.Client
-	boblights = newBoblightSync()
+	client *golifx.Client
+	leds   = newLEDSync()
 )
 
 func initClient() error {
@@ -145,13 +169,6 @@ func initClient() error {
 
 // Connect establishes a LIFX client and performs device discovery
 func Connect(cfg *config.Config) {
-	logger := log.New()
-
-	if cfg.Debug != nil && *cfg.Debug {
-		logger.Level = log.DebugLevel
-	}
-	golifx.SetLogger(logger)
-
 	if err := initClient(); err != nil {
 		tick := time.Tick(2 * time.Second)
 		done := make(closer)
@@ -206,7 +223,7 @@ func Execute(callback map[string]interface{}) {
 		return
 	}
 
-	boblights.cancel(&cb)
+	leds.cancel(&cb)
 
 	if _, ok := callback[`power`]; ok {
 		if len(cb.Lights) == 0 && len(cb.Groups) == 0 {
@@ -301,55 +318,81 @@ func Execute(callback map[string]interface{}) {
 	}
 
 	if _, ok := callback[`boblight`]; ok {
-		// Recommended LIFX device rate limit
-		rateLimit := time.Second / 20
-		// If requested rate limit is longer than minimum, use it
-		if cb.Boblight.RateLimit > rateLimit {
-			rateLimit = cb.Boblight.RateLimit
-		}
-		if len(cb.Lights) == 0 && len(cb.Groups) == 0 {
-			lights, err := client.GetLights()
-			if err != nil {
-				return
-			}
-			for _, light := range lights {
-				boblights.add(light, cb.Boblight.Lights, rateLimit)
-			}
-		}
-		if len(cb.Lights) > 0 {
-			for _, label := range cb.Lights {
-				light, err := client.GetLightByLabel(label)
-				if err != nil {
-					log.WithFields(log.Fields{
-						`label`: label,
-						`error`: err,
-					}).Error(`Finding light`)
-					continue
-				}
-				boblights.add(light, cb.Boblight.Lights, rateLimit)
-			}
-		}
-		if len(cb.Groups) > 0 {
-			for _, label := range cb.Groups {
-				group, err := client.GetGroupByLabel(label)
-				if err != nil {
-					log.WithFields(log.Fields{
-						`label`: label,
-						`error`: err,
-					}).Error(`Finding group`)
-					continue
-				}
-				for _, light := range group.Lights() {
-					boblights.add(light, cb.Boblight.Lights, rateLimit)
-				}
-			}
-		}
+		ledCallback(cb, ledCallbackBoblight)
+	}
+
+	if _, ok := callback[`hyperion`]; ok {
+		ledCallback(cb, ledCallbackHyperion)
 	}
 
 }
 
-func newBoblightSync() *boblightSync {
-	return &boblightSync{
+func ledCallback(cb lifxCallback, kind ledCallbackType) {
+	// Recommended LIFX device rate limit
+	rateLimit := time.Second / 20
+	// If requested rate limit is longer than minimum, use it
+	var sourceLights []uint16
+	switch kind {
+	case ledCallbackBoblight:
+		sourceLights = cb.Boblight.Lights
+		if cb.Boblight.RateLimit > rateLimit {
+			rateLimit = cb.Boblight.RateLimit
+		}
+	case ledCallbackHyperion:
+		sourceLights = cb.Hyperion.Lights
+		if cb.Hyperion.RateLimit > rateLimit {
+			rateLimit = cb.Hyperion.RateLimit
+		}
+	default:
+		return
+	}
+
+	// All lights
+	if len(cb.Lights) == 0 && len(cb.Groups) == 0 {
+		lights, err := client.GetLights()
+		if err != nil {
+			return
+		}
+		for _, light := range lights {
+			leds.add(light, sourceLights, rateLimit, kind)
+		}
+	}
+
+	// Explicit lights
+	if len(cb.Lights) > 0 {
+		for _, label := range cb.Lights {
+			light, err := client.GetLightByLabel(label)
+			if err != nil {
+				log.WithFields(log.Fields{
+					`label`: label,
+					`error`: err,
+				}).Error(`Finding light`)
+				continue
+			}
+			leds.add(light, sourceLights, rateLimit, kind)
+		}
+	}
+
+	// Groups
+	if len(cb.Groups) > 0 {
+		for _, label := range cb.Groups {
+			group, err := client.GetGroupByLabel(label)
+			if err != nil {
+				log.WithFields(log.Fields{
+					`label`: label,
+					`error`: err,
+				}).Error(`Finding group`)
+				continue
+			}
+			for _, light := range group.Lights() {
+				leds.add(light, sourceLights, rateLimit, kind)
+			}
+		}
+	}
+}
+
+func newLEDSync() *ledSync {
+	return &ledSync{
 		lights: make(map[uint64]closer),
 	}
 }

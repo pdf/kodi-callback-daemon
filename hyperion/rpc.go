@@ -46,21 +46,39 @@ func (f qtfloat64) MarshalJSON() ([]byte, error) {
 // Connect establishes a TCP connection to the specified address and attaches
 // JSON encoders/decoders.
 func Connect(conf *config.Config) {
-	var err error
+	var (
+		err        error
+		outputAddr string
+	)
 	if cfg == nil {
 		cfg = conf
 	}
-	address := fmt.Sprintf(`%s:%d`, cfg.Hyperion.Address, cfg.Hyperion.Port)
-	conn, err = net.Dial(`tcp`, address)
+	if cfg.Hyperion.Output != nil {
+		outputAddr = fmt.Sprintf(`%s:%d`, cfg.Hyperion.Output.Address, cfg.Hyperion.Output.Port)
+	} else if cfg.Hyperion.Address != `` {
+		outputAddr = fmt.Sprintf(`%s:%d`, cfg.Hyperion.Address, cfg.Hyperion.Port)
+	} else {
+		log.Error(`Missing Hyperion output configuration`)
+		return
+	}
+	conn, err = net.Dial(`tcp`, outputAddr)
 	for err != nil {
 		log.WithField(`error`, err).Error(`Connecting to Hyperion`)
 		log.Info(`Attempting reconnect...`)
 		time.Sleep(time.Second)
-		conn, err = net.Dial(`tcp`, address)
+		conn, err = net.Dial(`tcp`, outputAddr)
 	}
 	log.Info(`Connected to Hyperion`)
 	encoder = json.NewEncoder(conn)
 	decoder = json.NewDecoder(conn)
+
+	if cfg.Hyperion.Input != nil {
+		go func() {
+			if err = listen(fmt.Sprintf(`%s:%d`, cfg.Hyperion.Input.Address, cfg.Hyperion.Input.Port)); err != nil {
+				log.WithField(`error`, err).Error(`Hyperion UDP listener failed`)
+			}
+		}()
+	}
 }
 
 // Close Hyperion connection
@@ -85,7 +103,7 @@ func coerce(key string, value interface{}) interface{} {
 		}
 	case []interface{}:
 		result, ok := value.([]interface{})
-		if ok == false {
+		if !ok {
 			log.WithField(`value`, value).Fatal(`Could not parse array, check configuration near`)
 		}
 		for i := range result {
@@ -94,7 +112,7 @@ func coerce(key string, value interface{}) interface{} {
 		return result
 	case map[string]interface{}:
 		result, ok := value.(map[string]interface{})
-		if ok == false {
+		if !ok {
 			log.WithField(`value`, value).Fatal(`Could not parse object, check configuration near`)
 		}
 		for k, v := range result {
@@ -142,7 +160,7 @@ func Execute(callback map[string]interface{}) {
 	if _, ok := err.(net.Error); ok {
 		log.WithField(`error`, err).Error(`Writing to Hyperion`)
 		Connect(cfg)
-		if err := encoder.Encode(&cb); err != nil {
+		if err = encoder.Encode(&cb); err != nil {
 			log.WithField(`error`, err).Error(`Failed writing to Hyperion`)
 		}
 	} else if err != nil {
@@ -151,7 +169,7 @@ func Execute(callback map[string]interface{}) {
 	// Check response and log any failure responses from Hyperion
 	Read(response)
 	log.WithField(`response`, response).Debug(`Received from Hyperion`)
-	if response.Success == false && response.Error != nil {
+	if !response.Success && response.Error != nil {
 		log.WithField(`response.Error`, *response.Error).Warn(`Received from Hyperion`)
 	}
 }
