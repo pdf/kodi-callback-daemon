@@ -1,4 +1,24 @@
 
+<a name="v1.5.0"></a>
+# v1.5.0 (2017-09-30)
+
+## :sparkles: Features
+
+- **hyperion**:
+  - Add support for Hyperion UDP input ([2015bd26](https://github.com/pdf/kodi-callback-daemon/commit/2015bd267a4abf7e8fddd877790cd7c0778214d2))  
+    <br>TODO: Needs documentation
+
+## :house: Housekeeping
+
+- **libs**:
+  - Migrate from kodi_jsonrpc to kodirpc ([27330a28](https://github.com/pdf/kodi-callback-daemon/commit/27330a28efc4d6ec7e42914209489be8d8838553))
+
+## :arrow_up: Dependency Updates
+
+- **core**:
+  - Bump golifx to v1.0.0 ([a9d8d21f](https://github.com/pdf/kodi-callback-daemon/commit/a9d8d21ff0828ad8c10fe8986ff31e92a5fe254c))
+
+
 <a name="v1.4.2"></a>
 # v1.4.2 (2016-03-26)
 
@@ -17,18 +37,13 @@
   - Refactor boblight proxy, fix channel double-close ([4bbfe7ad](https://github.com/pdf/kodi-callback-daemon/commit/4bbfe7adcff77d1cb540306fc59d1f04dd5fba1c))
 
 
-<a name="v1.3.6"></a>
-# v1.3.6 (2015-11-24)
+<a name="v1.4.0"></a>
+# v1.4.0 (2015-11-20)
 
 ## :sparkles: Features
 
 - **lifx**:
   - Boblight proxy support ([a03e5b70](https://github.com/pdf/kodi-callback-daemon/commit/a03e5b702adca6820bb3110dc661a7a8ab52fd32))
-
-## :bug: Bug Fixes
-
-- **boblight**:
-  - Refactor boblight proxy, fix channel double-close ([4bbfe7ad](https://github.com/pdf/kodi-callback-daemon/commit/4bbfe7adcff77d1cb540306fc59d1f04dd5fba1c))
 
 ## :arrow_up: Dependency Updates
 

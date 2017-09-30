@@ -1,4 +1,13 @@
-kodi-callback-daemon (1.4.1ubuntu1) vivid; urgency=medium
+kodi-callback-daemon (1.5.0) unstable; urgency=medium
+
+  * :house:(libs) Migrate from kodi_jsonrpc to kodirpc
+  * :sparkles:(hyperion) Add support for Hyperion UDP input
+  * :arrow_up:(core) Bump golifx to v1.0.0
+  * Bump to v1.5.0
+
+ -- Peter Fern <github@obfusc8.org>  Sat, 30 Sep 2017 14:19:58 +1000
+
+kodi-callback-daemon (1.4.2) unstable; urgency=medium
 
   * :arrow_up:(core) Bump golifx to v0.4.0
   * Commit glide.lock
