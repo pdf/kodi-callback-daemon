@@ -1,47 +1,14 @@
-hash: 3f94edcf0b43531c3a44a30017af03d9fbf56e79f33798402a202024f15265f2
-updated: 2016-06-24T21:48:43.444155393+10:00
+hash: 5f4407b7df34ecc67405bc2a07b6ce8ed877a18c20d4645fed1218cfda1e927b
+updated: 2017-09-30T14:18:23.264703777+10:00
 imports:
-- name: github.com/armon/consul-api
-  version: dcfedd50ed5334f96adee43fc88518a4f095e15c
-- name: github.com/BurntSushi/toml
-  version: bbd5bb678321a0d6e58f1099321dfa73391c1b6f
-- name: github.com/coreos/go-etcd
-  version: 003851be7bb0694fe3cc457a49529a19388ee7cf
-  subpackages:
-  - etcd
-- name: github.com/cpuguy83/go-md2man
-  version: 2724a9c9051aa62e9cca11304e7dd518e9e41599
-  subpackages:
-  - md2man
-- name: github.com/davecgh/go-spew
-  version: 5215b55f46b2b919f50a1df0eaa5886afe4e3b3d
-  subpackages:
-  - spew
-- name: github.com/hashicorp/hcl
-  version: 2604f3bda7e8960c1be1063709e7d7f0765048d0
-  subpackages:
-  - hcl/ast
-  - hcl/parser
-  - hcl/token
-  - json/parser
-  - hcl/printer
-  - hcl/scanner
-  - json/scanner
-  - json/token
-- name: github.com/kr/pretty
-  version: e6ac2fc51e89a3249e82157fa0bb7a18ef9dd5bb
-- name: github.com/kr/pty
-  version: f7ee69f31298ecbe5d2b349c711e2547a617d398
-- name: github.com/kr/text
-  version: bb797dc4fb8320488f47bf11de07a733d7233e1f
+- name: github.com/lucasb-eyer/go-colorful
+  version: 231272389856c976b7500c4fffcc52ddf06ff4eb
 - name: github.com/lunixbochs/struc
-  version: ae5aa8161e35c822b55526833b1635764b740770
-- name: github.com/magiconair/properties
-  version: c265cfa48dda6474e208715ca93e987829f572f8
+  version: ef56447db6a068ad9e52bc54a1aff5fb9e1ed2dd
 - name: github.com/mitchellh/mapstructure
   version: 281073eb9eb092240d33ef253c404f1cca550309
 - name: github.com/pdf/golifx
-  version: 668a926f196c3663686af11897a16398756b28c1
+  version: ce317ccca94b90bf0d9a44eec6afd8a73ce94800
   subpackages:
   - common
   - protocol
@@ -50,65 +17,14 @@ imports:
   - protocol/v2/shared
 - name: github.com/pdf/kodirpc
   version: 9b364fa674f5fe99f37cdbeef74b14f82ea293d0
-- name: github.com/pmezard/go-difflib
-  version: d8ed2627bdf02c080bf22230dbb337003b7aba2d
-  subpackages:
-  - difflib
-- name: github.com/russross/blackfriday
-  version: b43df972fb5fdf3af8d2e90f38a69d374fe26dd0
+- name: github.com/prometheus/log
+  version: 9a3136781e1ff7bc42736ba4acb81339b1422551
 - name: github.com/satori/go.uuid
   version: 6b8e5b55d20d01ad47ecfe98e5171688397c61e9
-- name: github.com/shurcooL/sanitized_anchor_name
-  version: 10ef21a441db47d8b13ebcc5fd2310f636973c77
 - name: github.com/Sirupsen/logrus
   version: 4b6ea7319e214d98c938f12692336f7ca9348d6b
-- name: github.com/spf13/cast
-  version: 27b586b42e29bec072fe7379259cc719e1289da6
-- name: github.com/spf13/cobra
-  version: c678ff029ee250b65714e518f4f5c5cb934955de
+- name: golang.org/x/sys
+  version: 314a259e304ff91bd6985da2a7149bbf91237993
   subpackages:
-  - doc
-  - cobra/cmd
-- name: github.com/spf13/jwalterweatherman
-  version: 33c24e77fb80341fe7130ee7c594256ff08ccc46
-- name: github.com/spf13/pflag
-  version: 7f60f83a2c81bc3c3c0d5297f61ddfa68da9d3b7
-- name: github.com/spf13/viper
-  version: c975dc1b4eacf4ec7fdbf0873638de5d090ba323
-- name: github.com/stretchr/objx
-  version: cbeaeb16a013161a98496fad62933b1d21786672
-- name: github.com/stretchr/testify
-  version: 6fe211e493929a8aac0469b93f28b1d0688a9a3a
-  subpackages:
-  - mock
-  - assert
-- name: github.com/ugorji/go
-  version: c062049c1793b01a3cc3fe786108edabbaf7756b
-  subpackages:
-  - codec
-- name: github.com/xordataexchange/crypt
-  version: 749e360c8f236773f28fc6d3ddfce4a470795227
-  subpackages:
-  - config
-  - backend
-  - backend/consul
-  - backend/etcd
-  - encoding/secconf
-- name: golang.org/x/crypto
-  version: c197bcf24cde29d3f73c7b4ac6fd41f4384e8af6
-  subpackages:
-  - openpgp
-  - openpgp/armor
-  - openpgp/errors
-  - openpgp/packet
-  - openpgp/s2k
-  - cast5
-- name: gopkg.in/airbrake/gobrake.v2
-  version: 31c8ff1fb8b79a6947e6565e9a6df535f98a6b94
-- name: gopkg.in/fsnotify.v1
-  version: 875cf421b32f8f1b31bd43776297876d01542279
-- name: gopkg.in/gemnasium/logrus-airbrake-hook.v2
-  version: 31e6fd4bd5a98d8ee7673d24bc54ec73c31810dd
-- name: gopkg.in/yaml.v2
-  version: a83829b6f1293c91addabc89d0571c246397bbf4
-devImports: []
+  - unix
+testImports: []
