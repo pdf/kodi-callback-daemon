@@ -1,4 +1,13 @@
 
+<a name="v1.5.1"></a>
+# v1.5.1 (2017-10-04)
+
+## :arrow_up: Dependency Updates
+
+- **core**:
+  - Bump golifx to v1.0.1 ([26a2499c](https://github.com/pdf/kodi-callback-daemon/commit/26a2499c593c52ee56876159e60b05fd2954c92f))
+
+
 <a name="v1.5.0"></a>
 # v1.5.0 (2017-09-30)
 

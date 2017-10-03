@@ -1,3 +1,10 @@
+kodi-callback-daemon (1.5.1) unstable; urgency=medium
+
+  * :arrow_up:(core) Bump golifx to v1.0.1
+  * Bump to v1.5.1
+
+ -- Peter Fern <github@obfusc8.org>  Wed, 04 Oct 2017 01:06:51 +1100
+
 kodi-callback-daemon (1.5.0) unstable; urgency=medium
 
   * :house:(libs) Migrate from kodi_jsonrpc to kodirpc
