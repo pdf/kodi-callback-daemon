@@ -1,5 +1,5 @@
-hash: 5f4407b7df34ecc67405bc2a07b6ce8ed877a18c20d4645fed1218cfda1e927b
-updated: 2017-09-30T14:18:23.264703777+10:00
+hash: 1493b28edaf8d1be157ac4f404f9734a6af87e6a9168443f0c77c009191cf70c
+updated: 2017-10-04T01:05:44.185785537+11:00
 imports:
 - name: github.com/lucasb-eyer/go-colorful
   version: 231272389856c976b7500c4fffcc52ddf06ff4eb
@@ -8,7 +8,7 @@ imports:
 - name: github.com/mitchellh/mapstructure
   version: 281073eb9eb092240d33ef253c404f1cca550309
 - name: github.com/pdf/golifx
-  version: ce317ccca94b90bf0d9a44eec6afd8a73ce94800
+  version: 39f6a66f0b8281f12002b6b1efafee3f5b07a5cc
   subpackages:
   - common
   - protocol
